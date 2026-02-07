@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+html,
+body,
+app,
+#app {
+	height: 100%;
+	width: 100%;
+	background: rgb(9, 8, 12);
+	color: ghostwhite;
+}
