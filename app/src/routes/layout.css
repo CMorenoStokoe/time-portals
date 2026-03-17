@@ -2,12 +2,46 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
+/** Fonts */
+
+@font-face {
+	font-family: 'Jacquard 24';
+	src: url('/font/Jacquard24-Regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Caesar Dressing';
+	src: url('/font/CaesarDressing-Regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Bentham';
+	src: url('/font/Bentham-Regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+/** todo - replace with proper @theme */
+.font-display {
+	font-family: 'Caesar Dressing', ui-serif, Georgia, serif;
+}
+.font-body: {
+	font-family: 'Bentham', ui-serif, Georgia, serif;
+}
+
+/** GLobal styles */
 html,
 body,
 app,
 #app {
 	height: 100%;
 	width: 100%;
-	background: rgb(9, 8, 12);
-	color: ghostwhite;
+}
+* {
+	font-family: 'Bentham', ui-serif, Georgia, serif;
 }

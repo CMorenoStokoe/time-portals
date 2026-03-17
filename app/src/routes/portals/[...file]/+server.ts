@@ -3,81 +3,165 @@ import fs from 'node:fs';
 import { Readable } from 'node:stream';
 import path from 'node:path';
 
+type MediaKind = 'video' | 'image';
+
+const MEDIA_BY_EXTENSION: Record<string, { kind: MediaKind; mime: string }> = {
+	'.mp4': { kind: 'video', mime: 'video/mp4' },
+	'.webm': { kind: 'video', mime: 'video/webm' },
+	'.mov': { kind: 'video', mime: 'video/quicktime' },
+	'.jpg': { kind: 'image', mime: 'image/jpeg' },
+	'.jpeg': { kind: 'image', mime: 'image/jpeg' },
+	'.png': { kind: 'image', mime: 'image/png' },
+	'.webp': { kind: 'image', mime: 'image/webp' },
+	'.gif': { kind: 'image', mime: 'image/gif' },
+	'.avif': { kind: 'image', mime: 'image/avif' }
+};
+
+function getMediaInfo(fileName: string) {
+	const extension = path.extname(fileName).toLowerCase();
+	return MEDIA_BY_EXTENSION[extension] ?? null;
+}
+
+function pickPreferredMedia(files: string[]) {
+	const sortedFiles = [...files].sort((a, b) => a.localeCompare(b));
+	const firstVideo = sortedFiles.find((fileName) => getMediaInfo(fileName)?.kind === 'video');
+	if (firstVideo) {
+		return firstVideo;
+	}
+
+	const firstImage = sortedFiles.find((fileName) => getMediaInfo(fileName)?.kind === 'image');
+	if (firstImage) {
+		return firstImage;
+	}
+
+	return null;
+}
+
+function parseRange(rangeHeader: string, fileSize: number) {
+	const match = /^bytes=(\d*)-(\d*)$/.exec(rangeHeader.trim());
+	if (!match) {
+		return null;
+	}
+
+	const [, startText, endText] = match;
+
+	if (startText === '' && endText === '') {
+		return null;
+	}
+
+	if (startText === '') {
+		const suffixLength = Number.parseInt(endText, 10);
+		if (Number.isNaN(suffixLength) || suffixLength <= 0) {
+			return null;
+		}
+
+		const length = Math.min(suffixLength, fileSize);
+		return { start: fileSize - length, end: fileSize - 1 };
+	}
+
+	const start = Number.parseInt(startText, 10);
+	if (Number.isNaN(start) || start < 0) {
+		return null;
+	}
+
+	const end = endText === '' ? fileSize - 1 : Number.parseInt(endText, 10);
+	if (Number.isNaN(end) || end < start) {
+		return null;
+	}
+
+	if (start >= fileSize) {
+		return { unsatisfiable: true as const };
+	}
+
+	return {
+		start,
+		end: Math.min(end, fileSize - 1)
+	};
+}
+
+function createStreamResponse(filePath: string, headers: Record<string, string>, status = 200) {
+	const nodeStream = fs.createReadStream(filePath);
+	const webStream = Readable.toWeb(nodeStream) as ReadableStream;
+
+	return new Response(webStream, {
+		status,
+		headers
+	});
+}
+
 export const GET: RequestHandler = async ({ params, request }) => {
-    const PROJECT_ROOT = process.cwd();
-    const filePayload = params.file || ''; 
-    let filePath = path.join(PROJECT_ROOT, 'portals', filePayload);
+	const projectRoot = process.cwd();
+	const filePayload = params.file || '';
 
-    // 1. EXISTENCE CHECK
-    if (!fs.existsSync(filePath)) {
-        throw error(404, `Path not found: ${filePayload}`);
-    }
+	const requestedPath = path.join(projectRoot, 'portals', filePayload);
 
-    // 2. DIRECTORY RESOLUTION (The "Choice B" Logic)
-    if (fs.lstatSync(filePath).isDirectory()) {
-        const filesInDir = fs.readdirSync(filePath);
-        // Look for the first video file available
-        const videoFile = filesInDir.find(f => 
-            f.endsWith('.mp4') || f.endsWith('.webm') || f.endsWith('.mov')
-        );
-        
-        if (videoFile) {
-            filePath = path.join(filePath, videoFile);
-        } else {
-            throw error(404, 'No supported video file found inside this directory.');
-        }
-    }
+	if (!fs.existsSync(requestedPath)) throw error(404, `Path not found: ${filePayload}`);
 
-    // 3. FILE STATS
-    const stats = fs.statSync(filePath);
-    const fileSize = stats.size;
-    const range = request.headers.get('range');
+	let resolvedPath: string;
+	let fileName: string;
 
-    // 4. STREAMING LOGIC (With Safety Guards)
-    if (range) {
-        const parts = range.replace(/bytes=/, "").split("-");
-        const start = parseInt(parts[0], 10);
-        const endPart = parseInt(parts[1], 10);
-        
-        // Ensure end isn't NaN and doesn't exceed file size
-        const end = !isNaN(endPart) ? endPart : fileSize - 1;
+	if (fs.lstatSync(requestedPath).isDirectory()) {
+		const preferredMedia = pickPreferredMedia(fs.readdirSync(requestedPath));
 
-        // CRITICAL: Prevent the "Received -1" error
-        // Ensure start/end are valid positive integers within file bounds
-        const safeStart = Math.max(0, start);
-        const safeEnd = Math.min(end, fileSize - 1);
+		if (!preferredMedia) {
+			throw error(404, 'No supported video or image file found inside this directory.');
+		}
 
-        if (safeStart > safeEnd) {
-            return new Response(null, { 
-                status: 416, 
-                headers: { 'Content-Range': `bytes */${fileSize}` } 
-            });
-        }
+		fileName = preferredMedia;
+		resolvedPath = path.join(requestedPath, fileName);
+	} else {
+		fileName = path.basename(requestedPath);
+		if (!getMediaInfo(fileName)) {
+			throw error(415, `Unsupported file type: ${fileName}`);
+		}
+		resolvedPath = requestedPath;
+	}
 
-        const chunksize = (safeEnd - safeStart) + 1;
-        const nodeStream = fs.createReadStream(filePath, { start: safeStart, end: safeEnd });
-        const webStream = Readable.toWeb(nodeStream) as ReadableStream;
+	const mediaInfo = getMediaInfo(fileName);
+	if (!mediaInfo) {
+		throw error(415, `Unsupported file type: ${fileName}`);
+	}
 
-        return new Response(webStream, {
-            status: 206,
-            headers: {
-                'Content-Range': `bytes ${safeStart}-${safeEnd}/${fileSize}`,
-                'Accept-Ranges': 'bytes',
-                'Content-Length': chunksize.toString(),
-                'Content-Type': 'video/mp4', // You can use 'mime' lib here for accuracy
-            }
-        });
-    }
+	const stats = fs.statSync(resolvedPath);
+	const fileSize = stats.size;
+	const range = request.headers.get('range');
+	const baseHeaders = {
+		'Content-Length': fileSize.toString(),
+		'Content-Type': mediaInfo.mime,
+		'Accept-Ranges': mediaInfo.kind === 'video' ? 'bytes' : 'none'
+	};
 
-    // 5. FULL FILE SERVE (If no Range requested)
-    const nodeStream = fs.createReadStream(filePath);
-    const webStream = Readable.toWeb(nodeStream) as ReadableStream;
+	if (mediaInfo.kind === 'video') {
+		if (range) {
+			const parsedRange = parseRange(range, fileSize);
 
-    return new Response(webStream, {
-        headers: {
-            'Content-Length': fileSize.toString(),
-            'Content-Type': 'video/mp4',
-            'Accept-Ranges': 'bytes'
-        }
-    });
+			if (!parsedRange || 'unsatisfiable' in parsedRange) {
+				return new Response(null, {
+					status: 416,
+					headers: { 'Content-Range': `bytes */${fileSize}` }
+				});
+			}
+
+			const chunkSize = parsedRange.end - parsedRange.start + 1;
+			const nodeStream = fs.createReadStream(resolvedPath, {
+				start: parsedRange.start,
+				end: parsedRange.end
+			});
+			const webStream = Readable.toWeb(nodeStream) as ReadableStream;
+
+			return new Response(webStream, {
+				status: 206,
+				headers: {
+					'Content-Range': `bytes ${parsedRange.start}-${parsedRange.end}/${fileSize}`,
+					'Accept-Ranges': 'bytes',
+					'Content-Length': chunkSize.toString(),
+					'Content-Type': mediaInfo.mime
+				}
+			});
+		}
+
+		return createStreamResponse(resolvedPath, baseHeaders);
+	}
+
+	return createStreamResponse(resolvedPath, baseHeaders);
 };
