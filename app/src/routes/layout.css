@@ -3,14 +3,6 @@
 @plugin '@tailwindcss/typography';
 
 /** Fonts */
-
-@font-face {
-	font-family: 'Jacquard 24';
-	src: url('/font/Jacquard24-Regular.ttf') format('truetype');
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
 @font-face {
 	font-family: 'Caesar Dressing';
 	src: url('/font/CaesarDressing-Regular.ttf') format('truetype');
@@ -19,19 +11,18 @@
 	font-display: swap;
 }
 @font-face {
-	font-family: 'Bentham';
-	src: url('/font/Bentham-Regular.ttf') format('truetype');
+	font-family: 'Roboto';
+	src: url('/font/Roboto-VariableFont_wdth,wght.ttf') format('truetype');
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
 }
-
-/** todo - replace with proper @theme */
-.font-display {
-	font-family: 'Caesar Dressing', ui-serif, Georgia, serif;
-}
-.font-body: {
-	font-family: 'Bentham', ui-serif, Georgia, serif;
+@font-face {
+	font-family: 'Grandstander';
+	src: url('/font/Grandstander-VariableFont_wght.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
 }
 
 /** GLobal styles */
@@ -41,7 +32,43 @@ app,
 #app {
 	height: 100%;
 	width: 100%;
+	background: #1c1917;
 }
-* {
-	font-family: 'Bentham', ui-serif, Georgia, serif;
+
+/** Historical Theme */
+@theme {
+	/* Fonts */
+	--font-display: 'Grandstander', ui-serif, Georgia, serif;
+	--font-body: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+	--font-greek: 'Caesar Dressing', ui-serif, Georgia, serif;
+	/*  Colors (for reference)
+	--color-primary: #7c2d12; --orange-900
+	--color-secondary: #1C1917; --stone-900
+	--color-accent: #FED7AA; ----orange-200
+	*/
+}
+
+/** Google MUI icons */
+@font-face {
+	font-family: 'Material Icons';
+	font-style: normal;
+	font-weight: 400;
+	src: url('/font/MaterialSymbolsRounded-VariableFont_FILL,GRAD,opsz,wght.ttf') format('truetype');
+}
+.icon {
+	font-family: 'Material Icons';
+	font-weight: normal;
+	font-style: normal;
+	font-size: 24px; /* Preferred icon size */
+	display: inline-block;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+	-webkit-font-smoothing: antialiased; /* Support for all WebKit browsers. */
+	text-rendering: optimizeLegibility; /* Support for Safari and Chrome. */
+	-moz-osx-font-smoothing: grayscale; /* Support for Firefox. */
+	font-feature-settings: 'liga'; /* Support for IE. */
 }

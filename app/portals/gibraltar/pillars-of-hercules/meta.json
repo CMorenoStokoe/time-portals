@@ -1,0 +1,26 @@
+{
+	"year": "1779",
+	"description": "Relief during the Great Siege",
+	"location": "Bay of Gibraltar",
+	"country": "Gibraltar",
+	"highlights": [
+		{
+			"x": "0.75",
+			"y": "0.25",
+			"title": "Spanish gun boats",
+			"text": "Spanish gun boats form a blockade in attempt to starve the population into surrender"
+		},
+		{
+			"x": "0.25",
+			"y": "0.25",
+			"title": "Naval Relief",
+			"text": "In a daring operation, HMS Sandwich and other Royal Navy ships slip through to resupply Gibraltar"
+		},
+		{
+			"x": "0.75",
+			"y": "0.75",
+			"title": "73rd Highland Regiment",
+			"text": "The 73rd Highland Regiment of the British Army stationed at Gibraltar"
+		}
+	]
+}
