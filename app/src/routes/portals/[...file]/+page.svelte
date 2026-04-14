@@ -15,11 +15,9 @@
 	onMount(() => {
 		let timeout: NodeJS.Timeout;
 		showText = true; // Show text
-		showRotateHint = false; // Hide rotate hint until after text fades
 		timeout = setTimeout(() => {
 			showText = false; // Hide text
 			showHighlights = true; // Show highlights instead
-			showRotateHint = true; // Show rotate hint
 			timeout = setTimeout(() => {
 				showRotateHint = false; // Hide rotate hint
 			}, 15000); // Give lots of time for people to notice
@@ -76,7 +74,7 @@
 <!-- Top bar -->
 <div class="absolute top-3 left-3 flex flex-row items-center justify-start space-x-2">
 	<!-- Rotate hint for portrait -->
-	{#if showRotateHint}
+	{#if !showText && showRotateHint}
 		<!-- Info button -->
 		<button onclick={() => (showRotateHint = false)}>
 			<icon
