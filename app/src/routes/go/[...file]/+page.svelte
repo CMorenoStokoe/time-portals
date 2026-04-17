@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	let { data } = $props();
@@ -13,6 +14,7 @@
 
 	// Lifecycle
 	onMount(() => {
+		// Fade in text
 		let timeout: NodeJS.Timeout;
 		showText = true; // Show text
 		timeout = setTimeout(() => {
@@ -78,7 +80,7 @@
 		<!-- Info button -->
 		<button onclick={() => (showRotateHint = false)}>
 			<icon
-				class="icon rotate-hint-icon cursor-pointer pt-1 text-3xl! text-black/45"
+				class="icon rotate-hint-icon cursor-pointer pt-1 text-3xl! text-black/45 hover:text-black"
 				style="font-variation-settings: 'FILL' 1;">screen_rotation</icon
 			>
 		</button>
@@ -93,7 +95,10 @@
 </div>
 
 <!-- Logo -->
-<button class="absolute bottom-4 left-3 cursor-pointer hover:scale-105" onclick={() => goto('/')}>
+<button
+	class="absolute bottom-4 left-3 cursor-pointer hover:scale-105"
+	onclick={() => goto(resolve('/'))}
+>
 	<img src="/svg/logo.svg" class="h-10 w-auto" alt="Logo" />
 </button>
 

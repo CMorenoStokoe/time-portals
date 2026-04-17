@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	const location = page.url.pathname
 		.split('/')
@@ -18,6 +20,10 @@
 			<br /><br />
 			<em>Please let us know you are interested!</em>
 		</p>
+		<button
+			class="rounded bg-green-300 p-1 text-black hover:scale-105"
+			onclick={() => goto(resolve('/'))}>Return to home</button
+		>
 	</div>
 {:else}
 	<!-- All other errors -->
