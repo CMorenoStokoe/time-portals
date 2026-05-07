@@ -5,15 +5,18 @@
 	}
 </script>
 
-<div class="relative mx-auto h-40 w-96 max-w-full overflow-hidden rounded-xl border-4 px-2">
+<div class="relative mx-auto h-40 w-full max-w-96 overflow-hidden rounded-xl border-4">
 	<!-- Historic overlay -->
 	<div class="absolute inset-0 w-full overflow-hidden">
-		<img src="demo/gib-1779.png" class="h-40 w-96 object-cover" alt="1778" />
+		<img src="/demo/gib-1779.png" class="h-full w-full object-cover" alt="1778" />
 	</div>
 
 	<!-- Modern base -->
-	<div class="absolute inset-0 overflow-hidden" style="width: {overlayPosition}%;">
-		<img src="demo/gib-2026.png" class="h-40 w-96 min-w-96 object-cover" alt="2026" />
+	<div
+		class="absolute inset-0 overflow-hidden"
+		style={`clip-path: inset(0 ${100 - overlayPosition}% 0 0);`}
+	>
+		<img src="/demo/gib-2026.png" class="h-full w-full object-cover" alt="2026" />
 	</div>
 
 	<!-- Slider -->
@@ -23,7 +26,7 @@
 		max="100"
 		bind:value={overlayPosition}
 		oninput={handleSlider}
-		class="absolute h-full w-full cursor-ew-resize appearance-none bg-transparent
+		class="slider-hitbox absolute inset-0 m-0 h-full w-full cursor-ew-resize appearance-none bg-transparent
                [&::-moz-range-thumb]:h-screen [&::-moz-range-thumb]:w-8
                [&::-moz-range-thumb]:border-none [&::-moz-range-thumb]:bg-transparent
                [&::-webkit-slider-thumb]:h-screen [&::-webkit-slider-thumb]:w-8
@@ -54,3 +57,18 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.slider-hitbox::-webkit-slider-runnable-track {
+		width: 100%;
+		height: 100%;
+		background: transparent;
+	}
+
+	.slider-hitbox::-moz-range-track {
+		width: 100%;
+		height: 100%;
+		background: transparent;
+		border: 0;
+	}
+</style>
