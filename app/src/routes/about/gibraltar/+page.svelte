@@ -5,28 +5,33 @@
 </script>
 
 <main
-	class="flex min-h-full w-full flex-col items-center justify-center space-y-2 pb-16 text-center font-body text-red-50"
+	class="flex min-h-full w-full flex-col items-center justify-center space-y-2 px-2 py-2 pb-16 text-center font-body text-red-50"
 >
 	<!-- Logo -->
 	<img
 		src="/svg/logo-themed-gibraltar.svg"
 		alt="History Lens"
-		class="mb-12 max-h-80 w-auto max-w-full"
+		class="mb-12 max-h-60 w-auto max-w-full"
 	/>
 
 	<!-- Intro -->
-	<h1 class="font-display text-2xl font-black">Peek back in time</h1>
-	<h1 class="font-display text-lg font-black">See historical Gibraltar</h1>
-	<p class="text-xs italic">Slide the bar to preview the Great Siege of Gibraltar site</p>
+	<h1 class="font-body text-2xl font-black">Restoring historical sites in Gibraltar</h1>
+	<h1 class="font-body">Bringing historical events to life with animated illustrations</h1>
 	<SlidingDemo />
-	<button
-		class="cursor-pointer rounded bg-red-800 p-2 font-display text-white hover:scale-105 hover:bg-red-700"
-		onclick={() => goto(resolve('/go/gibraltar/pillars-of-hercules'))}>Visit live preview</button
-	>
+	<div class="flex flex-row gap-2">
+		<button
+			class="cursor-pointer rounded bg-stone-200 p-2 font-body font-bold tracking-wider text-red-900 hover:scale-105 hover:bg-red-400"
+			onclick={() => goto(resolve('/go/gibraltar#about'))}>Learn more</button
+		>
+		<button
+			class="cursor-pointer rounded bg-red-800 p-2 font-body font-bold tracking-wider text-white hover:scale-105 hover:bg-red-700"
+			onclick={() => goto(resolve('/go/gibraltar/pillars-of-hercules'))}>Visit live preview</button
+		>
+	</div>
 	<hr class="border-px mt-6 w-full border-red-200/25" />
 
 	<!-- Instructions -->
-	<h1 class="mt-4 font-display text-2xl font-black">How it works</h1>
+	<h1 class="mt-4 font-display text-2xl font-black" id="about">How it works</h1>
 
 	<h1 class="font-display">Step 1</h1>
 	<p class="text-xs">Hang a plaque by your business or organisation</p>
@@ -49,16 +54,18 @@
 	</p>
 	<button
 		class="cursor-pointer rounded bg-red-800 p-2 text-white hover:scale-105"
-		onclick={() => goto(resolve('/go/gibraltar/pillars-of-hercules'))}>View a demo</button
+		onclick={() => goto(resolve('/go/gibraltar/pillars-of-hercules'))}
 	>
+		View a demo
+	</button>
 	<hr class="border-px mb-6 w-full border-red-200/25" />
 
 	<!-- Contact -->
 	<h1 class="font-display text-2xl font-black">Contact us</h1>
-	<a href="mailto:cmorenostokoe+gibraltar@gmail.com">
+	<a href="mailto:spacerstudiosofficial@gmail.com">
 		<p class="text-center text-xs">
 			Interested in hearing more or collaborating? Reach out to us at
-			<span class="underline">cmorenostokoe+gibraltar@gmail.com</span>
+			<span class="underline">spacerstudiosofficial@gmail.com</span>
 		</p>
 		<button class="mt-2 cursor-pointer rounded bg-red-800 p-2 text-white hover:scale-105"
 			>Email us</button

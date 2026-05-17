@@ -57,4 +57,16 @@
 		class="cursor-pointer rounded bg-orange-800 p-2 text-white hover:scale-105"
 		onclick={() => goto(resolve('/go/gibraltar/pillars-of-hercules'))}>View a demo</button
 	>
+
+	<!-- Contact -->
+	<h1 class="font-display text-2xl font-black">Contact us</h1>
+	<a href="mailto:spacerstudiosofficial@gmail.com">
+		<p class="text-center text-xs">
+			Interested in hearing more or collaborating? Reach out to us at
+			<span class="underline">spacerstudiosofficial@gmail.com</span>
+		</p>
+		<button class="mt-2 cursor-pointer rounded bg-red-800 p-2 text-white hover:scale-105"
+			>Email us</button
+		></a
+	>
 </main>
