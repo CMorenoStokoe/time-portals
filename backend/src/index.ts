@@ -24,13 +24,71 @@ process.env.LANGCHAIN_API_KEY ??= process.env.LANGSMITH_API_KEY
 const defaultRequest =
 	"View of the Grand Battery and King's Lines during the Great Siege of Gibraltar, 1781. Include defensive earthworks."
 
-const request = process.argv.slice(2).join(' ').trim() || defaultRequest
+const parseCliInput = () => {
+	const args = process.argv.slice(2)
+	const input: {
+		request: string
+		locationName?: string
+		originalPerspective?: string
+		liveRequired?: boolean
+	} = {
+		request: defaultRequest,
+	}
+
+	for (let i = 0; i < args.length; i += 1) {
+		const arg = args[i]
+		const next = args[i + 1]
+
+		if (arg === '--location' && next) {
+			input.locationName = next
+			i += 1
+			continue
+		}
+
+		if (arg === '--perspective' && next) {
+			input.originalPerspective = next
+			i += 1
+			continue
+		}
+
+		if (arg === '--live-required') {
+			input.liveRequired = true
+			continue
+		}
+	}
+
+	const freeText = args
+		.filter((value, index) => {
+			const prev = args[index - 1]
+			return (
+				value !== '--location' &&
+				value !== '--perspective' &&
+				value !== '--live-required' &&
+				prev !== '--location' &&
+				prev !== '--perspective'
+			)
+		})
+		.join(' ')
+		.trim()
+
+	if (freeText) {
+		input.request = freeText
+	}
+
+	return input
+}
 
 const run = async () => {
 	const { historicalImageAgent } = await import('./pipeline.js')
+	const input = parseCliInput()
 
 	const finalState = await historicalImageAgent.invoke(
-		{ request },
+		{
+			request: input.request,
+			locationName: input.locationName,
+			originalPerspective: input.originalPerspective,
+			liveRequired: input.liveRequired,
+		},
 		{
 			runName: 'time-portals-agent',
 		},
