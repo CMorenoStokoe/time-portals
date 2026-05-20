@@ -61,6 +61,12 @@ With a custom request:
 npm run dev -- "View of London Bridge in 1300 with timber structures and period boats"
 ```
 
+With explicit system inputs:
+
+```bash
+npm run dev -- --location "London Bridge" --perspective "https://maps.google.com/..."
+```
+
 Build and run compiled output:
 
 ```bash
@@ -86,3 +92,11 @@ If `GOOGLE_API_KEY` is not set (or quota is exceeded), the pipeline still runs e
 - Generator returns deterministic fixture images from `test/output`.
 - Critic validates fixture metadata and returns structured QA feedback.
 - The graph loops until the fixture output is approved or max revisions are reached.
+
+## Output contract
+
+The CLI prints a JSON object containing:
+
+- `finalImage`: historically validated image URL/data URL after all feature injections.
+- `qaMatrix`: Perspective/Geography/Cohesion pass/fail booleans plus feedback.
+- `metadata` (also mirrored as `jsonDocument`): media-ready metadata with `highlights` entries (`x`, `y`, `title`, `text`) for exactly three features.
