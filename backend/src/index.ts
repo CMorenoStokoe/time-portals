@@ -30,6 +30,7 @@ const parseCliInput = () => {
 		request: string
 		locationName?: string
 		originalPerspective?: string
+		liveRequired?: boolean
 	} = {
 		request: defaultRequest,
 	}
@@ -49,12 +50,23 @@ const parseCliInput = () => {
 			i += 1
 			continue
 		}
+
+		if (arg === '--live-required') {
+			input.liveRequired = true
+			continue
+		}
 	}
 
 	const freeText = args
 		.filter((value, index) => {
 			const prev = args[index - 1]
-			return value !== '--location' && value !== '--perspective' && prev !== '--location' && prev !== '--perspective'
+			return (
+				value !== '--location' &&
+				value !== '--perspective' &&
+				value !== '--live-required' &&
+				prev !== '--location' &&
+				prev !== '--perspective'
+			)
 		})
 		.join(' ')
 		.trim()
@@ -75,6 +87,7 @@ const run = async () => {
 			request: input.request,
 			locationName: input.locationName,
 			originalPerspective: input.originalPerspective,
+			liveRequired: input.liveRequired,
 		},
 		{
 			runName: 'time-portals-agent',

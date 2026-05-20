@@ -28,10 +28,15 @@ type QAMatrixResult = {
 	feedback: string
 }
 
+type SourceTag = 'llm' | 'fallback'
+type QaSourceTag = 'llm' | 'fixture'
+type ImageSourceTag = 'live' | 'fixture'
+
 type AgentInput = {
 	request?: string
 	locationName?: string
 	originalPerspective?: string
+	liveRequired?: boolean
 }
 
 const MAX_ATTEMPTS = 4
@@ -202,9 +207,15 @@ const toLegacyRequest = (input: AgentInput) => {
 const researchLocation = async (
 	request: string,
 	locationName: string,
-): Promise<ResearchResult> => {
+	liveRequired: boolean,
+): Promise<{ result: ResearchResult; source: SourceTag }> => {
 	if (!llm) {
-		return getFallbackResearch(locationName)
+		if (liveRequired) {
+			throw new Error(
+				'Live mode was requested but GOOGLE_API_KEY is not configured.',
+			)
+		}
+		return { result: getFallbackResearch(locationName), source: 'fallback' }
 	}
 
 	try {
@@ -222,20 +233,34 @@ const researchLocation = async (
 		])
 
 		return {
-			...result,
-			features: result.features as [VisualFeature, VisualFeature, VisualFeature],
+			result: {
+				...result,
+				features: result.features as [
+					VisualFeature,
+					VisualFeature,
+					VisualFeature,
+				],
+			},
+			source: 'llm',
 		}
 	} catch {
-		return getFallbackResearch(locationName)
+		if (liveRequired) {
+			throw new Error('Live mode research failed and fallback is disabled.')
+		}
+		return { result: getFallbackResearch(locationName), source: 'fallback' }
 	}
 }
 
 const runQaMatrix = async (
 	request: string,
 	imageUrl: string,
-): Promise<QAMatrixResult> => {
+	liveRequired: boolean,
+): Promise<{ result: QAMatrixResult; source: QaSourceTag }> => {
 	if (!llm || !imageUrl.startsWith('data:image/')) {
-		return evaluateFixtureQa(imageUrl)
+		if (liveRequired) {
+			throw new Error('Live QA mode was requested but fixture QA would be used.')
+		}
+		return { result: evaluateFixtureQa(imageUrl), source: 'fixture' }
 	}
 
 	try {
@@ -243,7 +268,7 @@ const runQaMatrix = async (
 			name: 'historical_qa_matrix',
 		})
 
-		return await qaLlm.invoke([
+		const result = await qaLlm.invoke([
 			new SystemMessage(
 				'Evaluate image quality using only this matrix: perspective, geography, cohesion. Return booleans and concise correction feedback.',
 			),
@@ -254,20 +279,33 @@ const runQaMatrix = async (
 				],
 			}),
 		])
+		return { result, source: 'llm' }
 	} catch {
-		return evaluateFixtureQa(imageUrl)
+		if (liveRequired) {
+			throw new Error('Live QA failed and fallback is disabled.')
+		}
+		return { result: evaluateFixtureQa(imageUrl), source: 'fixture' }
 	}
 }
 
 const createInsights = async (
 	research: ResearchResult,
-): Promise<[string, string, string]> => {
+	liveRequired: boolean,
+): Promise<{ insights: [string, string, string]; source: SourceTag }> => {
 	if (!llm) {
-		return research.features.map((feature) => feature.description) as [
-			string,
-			string,
-			string,
-		]
+		if (liveRequired) {
+			throw new Error(
+				'Live mode was requested but GOOGLE_API_KEY is not configured.',
+			)
+		}
+		return {
+			insights: research.features.map((feature) => feature.description) as [
+				string,
+				string,
+				string,
+			],
+			source: 'fallback',
+		}
 	}
 
 	try {
@@ -290,13 +328,19 @@ const createInsights = async (
 			),
 		])
 
-		return result.insights as [string, string, string]
+		return { insights: result.insights as [string, string, string], source: 'llm' }
 	} catch {
-		return research.features.map((feature) => feature.description) as [
-			string,
-			string,
-			string,
-		]
+		if (liveRequired) {
+			throw new Error('Live insights generation failed and fallback is disabled.')
+		}
+		return {
+			insights: research.features.map((feature) => feature.description) as [
+				string,
+				string,
+				string,
+			],
+			source: 'fallback',
+		}
 	}
 }
 
@@ -335,8 +379,14 @@ export const historicalImageAgent = {
 		const locationName = input.locationName?.trim() || defaultLocation
 		const originalPerspective =
 			input.originalPerspective?.trim() || defaultPerspective
+		const liveRequired = Boolean(input.liveRequired)
 
-		const research = await researchLocation(request, locationName)
+		const researchOutcome = await researchLocation(
+			request,
+			locationName,
+			liveRequired,
+		)
+		const research = researchOutcome.result
 
 		const basePrompt = buildBasePrompt(research, originalPerspective)
 		let baseImagePrompt = basePrompt
@@ -348,14 +398,37 @@ export const historicalImageAgent = {
 			cohesionPass: false,
 			feedback: 'QA not started.',
 		}
+		const baseQaAttempts: Array<{
+			attempt: number
+			imageSource: ImageSourceTag
+			qaSource: QaSourceTag
+			qaMatrix: QAMatrixResult
+		}> = []
+		const featureQaAttempts: Array<{
+			featureTitle: string
+			attempts: Array<{
+				attempt: number
+				imageSource: ImageSourceTag
+				qaSource: QaSourceTag
+				qaMatrix: QAMatrixResult
+			}>
+		}> = []
 
 		for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
 			totalAttempts += 1
 			finalImageUrl = await generateImageTool(baseImagePrompt, {
 				phase: 'base',
 				attempt,
+				liveRequired,
 			})
-			qaMatrix = await runQaMatrix(request, finalImageUrl)
+			const qaOutcome = await runQaMatrix(request, finalImageUrl, liveRequired)
+			qaMatrix = qaOutcome.result
+			baseQaAttempts.push({
+				attempt: attempt + 1,
+				imageSource: finalImageUrl.includes('#fixture=') ? 'fixture' : 'live',
+				qaSource: qaOutcome.source,
+				qaMatrix,
+			})
 
 			if (toQAPassed(qaMatrix)) {
 				break
@@ -364,6 +437,13 @@ export const historicalImageAgent = {
 
 		let integratedFeatureCount = 0
 		for (const [featureIndex, feature] of research.features.entries()) {
+			const attempts: Array<{
+				attempt: number
+				imageSource: ImageSourceTag
+				qaSource: QaSourceTag
+				qaMatrix: QAMatrixResult
+			}> = []
+
 			for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
 				totalAttempts += 1
 				const featurePrompt = buildFeaturePrompt(
@@ -375,8 +455,16 @@ export const historicalImageAgent = {
 					phase: 'feature',
 					featureIndex,
 					attempt,
+					liveRequired,
 				})
-				qaMatrix = await runQaMatrix(request, finalImageUrl)
+				const qaOutcome = await runQaMatrix(request, finalImageUrl, liveRequired)
+				qaMatrix = qaOutcome.result
+				attempts.push({
+					attempt: attempt + 1,
+					imageSource: finalImageUrl.includes('#fixture=') ? 'fixture' : 'live',
+					qaSource: qaOutcome.source,
+					qaMatrix,
+				})
 				baseImagePrompt = featurePrompt
 
 				if (toQAPassed(qaMatrix)) {
@@ -384,9 +472,15 @@ export const historicalImageAgent = {
 					break
 				}
 			}
+
+			featureQaAttempts.push({
+				featureTitle: feature.title,
+				attempts,
+			})
 		}
 
-		const insights = await createInsights(research)
+		const insightOutcome = await createInsights(research, liveRequired)
+		const insights = insightOutcome.insights
 		const highlights = research.features.map((feature, index) => ({
 			x: feature.x.toFixed(2),
 			y: feature.y.toFixed(2),
@@ -401,6 +495,28 @@ export const historicalImageAgent = {
 			country: research.country,
 			highlights,
 		}
+		const usedFixtureImages =
+			baseQaAttempts.some((attempt) => attempt.imageSource === 'fixture') ||
+			featureQaAttempts.some((entry) =>
+				entry.attempts.some((attempt) => attempt.imageSource === 'fixture'),
+			)
+		const usedFixtureQa =
+			baseQaAttempts.some((attempt) => attempt.qaSource === 'fixture') ||
+			featureQaAttempts.some((entry) =>
+				entry.attempts.some((attempt) => attempt.qaSource === 'fixture'),
+			)
+		const usedFallbackResearch = researchOutcome.source === 'fallback'
+		const usedFallbackInsights = insightOutcome.source === 'fallback'
+		const usedFallback =
+			usedFixtureImages ||
+			usedFixtureQa ||
+			usedFallbackResearch ||
+			usedFallbackInsights
+		const executionMode = !usedFallback
+			? 'live'
+			: llm
+				? 'hybrid'
+				: 'offline_fallback'
 
 		return {
 			request,
@@ -421,6 +537,15 @@ export const historicalImageAgent = {
 			qaFeedback: qaMatrix.feedback,
 			revisionCount: totalAttempts,
 			integratedFeatureCount,
+			executionMode,
+			executionProof: {
+				liveRequired,
+				googleApiConfigured: Boolean(googleApiKey),
+				researchSource: researchOutcome.source,
+				insightSource: insightOutcome.source,
+				baseQaAttempts,
+				featureQaAttempts,
+			},
 			status:
 				toQAPassed(qaMatrix) && integratedFeatureCount === 3
 					? 'approved'

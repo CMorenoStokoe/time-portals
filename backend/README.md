@@ -67,6 +67,12 @@ With explicit system inputs:
 npm run dev -- --location "London Bridge" --perspective "https://maps.google.com/..."
 ```
 
+Require live mode (disables all fixture fallbacks and fails if live providers are unavailable):
+
+```bash
+npm run dev -- --live-required --location "London Bridge" --perspective "https://maps.google.com/..."
+```
+
 Build and run compiled output:
 
 ```bash
@@ -100,3 +106,5 @@ The CLI prints a JSON object containing:
 - `finalImage`: historically validated image URL/data URL after all feature injections.
 - `qaMatrix`: Perspective/Geography/Cohesion pass/fail booleans plus feedback.
 - `metadata` (also mirrored as `jsonDocument`): media-ready metadata with `highlights` entries (`x`, `y`, `title`, `text`) for exactly three features.
+- `executionMode`: `live`, `hybrid`, or `offline_fallback`.
+- `executionProof`: per-phase attempt traces showing image/QA sources used in base and feature loops.
