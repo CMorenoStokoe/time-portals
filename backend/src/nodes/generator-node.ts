@@ -1,6 +1,6 @@
 // Generator node factory that creates prompts and calls image generation.
 import { HumanMessage, SystemMessage } from '@langchain/core/messages'
-import { ChatGoogleGenerativeAI } from '@langchain/google-genai'
+import type { Runnable } from '@langchain/core/runnables'
 
 import type { PipelineState } from '../schemas/graph-state.js'
 import { generateImageTool } from '../tools/image-tool.js'
@@ -14,7 +14,9 @@ const isQuotaError = (error: unknown): boolean => {
 	return message.includes('429') || message.includes('quota exceeded')
 }
 
-export const createGeneratorNode = (llm: ChatGoogleGenerativeAI) => {
+type PromptGenerator = Runnable<unknown, { content: unknown }>
+
+export const createGeneratorNode = (llm?: PromptGenerator) => {
 	return async (state: PipelineState) => {
 		const systemPrompt = new SystemMessage(
 			'Construct a highly detailed image generation prompt focusing on period-accurate materials, lighting, and topography.' +
@@ -23,30 +25,36 @@ export const createGeneratorNode = (llm: ChatGoogleGenerativeAI) => {
 					: ''),
 		)
 
-		let newPrompt: string
-
-		try {
-			const response = await llm.invoke([
-				systemPrompt,
-				new HumanMessage(state.request),
-			])
-
-			newPrompt = String(response.content)
-		} catch (error) {
-			if (!isQuotaError(error)) {
-				throw error
-			}
-
-			newPrompt = [
+		const createFallbackPrompt = () =>
+			[
 				'Historically accurate reconstruction prompt.',
 				`Scene request: ${state.request}`,
 				state.qaFeedback
 					? `Apply critic fixes: ${state.qaFeedback}`
 					: 'No critic fixes available.',
 			].join(' ')
+
+		let newPrompt = createFallbackPrompt()
+
+		if (llm) {
+			try {
+				const response = await llm.invoke([
+					systemPrompt,
+					new HumanMessage(state.request),
+				])
+
+				newPrompt = String(response.content)
+			} catch (error) {
+				if (!isQuotaError(error)) {
+					throw error
+				}
+			}
 		}
 
-		const imageUrl = await generateImageTool(newPrompt)
+		const imageUrl = await generateImageTool(newPrompt, {
+			revisionCount: state.revisionCount,
+			qaFeedback: state.qaFeedback,
+		})
 
 		return {
 			imagePrompt: newPrompt,

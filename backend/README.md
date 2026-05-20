@@ -8,6 +8,7 @@ TypeScript backend implementing a LangGraph generator-critic loop for historical
 - Uses structured critic output via Zod.
 - Prevents infinite loops via `MAX_REVISIONS` hard stop.
 - Returns the most recent state even if not approved by the final revision.
+- Uses `test/output` fixture media as an offline fallback for both generator and critic validation.
 
 ## Setup
 
@@ -76,4 +77,12 @@ npm run start
 - `src/nodes/generator-node.ts`: Prompt generation node logic.
 - `src/nodes/critic-node.ts`: Critic evaluation node logic.
 - `src/nodes/evaluate-quality.ts`: Revision loop routing logic.
-- `src/tools/image-tool.ts`: Imagen integration stub.
+- `src/tools/image-tool.ts`: Image generation utility with fixture fallback.
+
+## Offline fixture mode
+
+If `GOOGLE_API_KEY` is not set (or quota is exceeded), the pipeline still runs end-to-end:
+
+- Generator returns deterministic fixture images from `test/output`.
+- Critic validates fixture metadata and returns structured QA feedback.
+- The graph loops until the fixture output is approved or max revisions are reached.

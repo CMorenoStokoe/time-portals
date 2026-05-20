@@ -8,11 +8,14 @@ import { CriticSchema } from './schemas/critic-schema.js'
 import { GraphState } from './schemas/graph-state.js'
 
 // Initialise llms
-const llm = new ChatGoogleGenerativeAI({
-	apiKey: process.env.GOOGLE_API_KEY as string,
-	model: 'gemini-2.0-flash-lite',
-})
-const criticLlm = llm.withStructuredOutput(CriticSchema, {
+const googleApiKey = process.env.GOOGLE_API_KEY?.trim()
+const llm = googleApiKey
+	? new ChatGoogleGenerativeAI({
+			apiKey: googleApiKey,
+			model: 'gemini-2.0-flash-lite',
+		})
+	: undefined
+const criticLlm = llm?.withStructuredOutput(CriticSchema, {
 	name: 'historical_qa',
 })
 
