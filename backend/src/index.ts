@@ -1,45 +1,95 @@
-// CLI entrypoint that runs the historical image graph.
-import { config as loadEnv } from 'dotenv'
-import { dirname, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
+// Entrypoint that runs the historical image graph.
+import { configDotenv } from 'dotenv'
+configDotenv()
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { langsmithConfig } from './config/langsmith.js'
+import { AppMetadata, Request } from './types.js'
+import { graph } from './graph.js'
+import { GraphViewCLI } from './logging/GraphViewCLI.js'
 
-const currentDir = dirname(fileURLToPath(import.meta.url))
-loadEnv({ path: resolve(currentDir, '../.env') })
+// Configure settings
+langsmithConfig()
 
-process.env.LANGSMITH_TRACING ??= 'true'
-process.env.LANGCHAIN_TRACING_V2 ??= process.env.LANGSMITH_TRACING
-process.env.LANGCHAIN_CALLBACKS_BACKGROUND ??= 'false'
-process.env.LANGSMITH_PROJECT ??= 'time-portals-backend'
-process.env.LANGCHAIN_PROJECT ??= process.env.LANGSMITH_PROJECT
-process.env.LANGSMITH_ENDPOINT ??= 'https://eu.api.smith.langchain.com'
-if (process.env.LANGSMITH_ENDPOINT === 'https://api.smith.langchain.com') {
-	process.env.LANGSMITH_ENDPOINT = 'https://eu.api.smith.langchain.com'
+const baseImageDataUrl = `data:image/png;base64,${readFileSync('test/input/prompt-modern-viewpoint-image.png', 'base64')}`
+const request: Request = {
+	locationName: 'Gibraltar pillars of hercules viewpoint',
+	xCoord: 36.144703,
+	yCoord: -5.353588,
+	// heading: 0, // Heading for orienting street view to the landmark
+	referenceBase: 'Google Street View',
+	baseImageUrl: baseImageDataUrl,
 }
-process.env.LANGCHAIN_ENDPOINT ??= process.env.LANGSMITH_ENDPOINT
-if (process.env.LANGCHAIN_ENDPOINT === 'https://api.smith.langchain.com') {
-	process.env.LANGCHAIN_ENDPOINT = 'https://eu.api.smith.langchain.com'
-}
-process.env.LANGCHAIN_API_KEY ??= process.env.LANGSMITH_API_KEY
 
-const defaultRequest =
-	"View of the Grand Battery and King's Lines during the Great Siege of Gibraltar, 1781. Include defensive earthworks."
+// Initialise logging
+const progress = new GraphViewCLI(graph.allEdges)
 
-const request = process.argv.slice(2).join(' ').trim() || defaultRequest
-
-const run = async () => {
-	const { historicalImageAgent } = await import('./pipeline.js')
-
-	const finalState = await historicalImageAgent.invoke(
+// Run the model
+await graph
+	.compile()
+	.invoke(
 		{ request },
 		{
-			runName: 'time-portals-agent',
+			callbacks: [
+				{
+					handleChainStart: (chain) => progress.update(chain?.name), // progress.update(chain?.kwargs?.name),
+				},
+			],
 		},
 	)
-
-	console.log(JSON.stringify(finalState, null, 2))
-}
-
-run().catch((error) => {
-	console.error('Pipeline execution failed:', error)
-	process.exitCode = 1
-})
+	.then((finalState) => {
+		// Construct directory for saving outputs
+		const [date, time] = new Date()
+			.toISOString()
+			.replace(/:/g, '-')
+			.split('T')
+		const [year, month, day] = date.split('-')
+		const outputDir = `output/${year}/${month}/${day}/${time}`
+		mkdirSync(outputDir, { recursive: true })
+		// Save outputs
+		const finalStateNoImages = {
+			...finalState,
+			request: { ...finalState.request, baseImageUrl: 1 },
+			generations: Object.fromEntries(
+				Object.entries(finalState).filter(
+					(key) => !key.includes('mage'),
+				),
+			),
+		}
+		writeFileSync(
+			`${outputDir}/raw.json`,
+			JSON.stringify(finalStateNoImages, null, 2),
+		) // Raw output
+		const meta: AppMetadata = {
+			year: finalState.research.eventYear,
+			description: finalState.baseImageDescription,
+			country: 'Gibraltar',
+			location: finalState.research.location,
+			highlights: finalState.research.eventHighlights.map((d) => ({
+				x: 0, // d.popoverLocationX,
+				y: 0, // d.popoverLocationY,
+				text: d.popoverText,
+			})),
+		}
+		writeFileSync(`${outputDir}/meta.json`, JSON.stringify(meta, null, 2)) // Metadata
+		writeFileSync(
+			`${outputDir}/scene-v0.png`,
+			finalState.request.baseImageUrl!,
+			'base64',
+		) // Base images
+		Array(4).forEach((_, i) =>
+			writeFileSync(
+				`${outputDir}/scene-v${i + 1}.png`,
+				// @ts-expect-error - TS doesn't recognise i is in-range
+				finalState[`imageGen${i + 1}`],
+				'base64',
+			),
+		) // Generated images
+		// End
+		betterConsole.log('AGENT', 'Successfully executed pipeline')
+		process.exitCode = 0
+		progress.stop()
+	})
+	.catch((error) => {
+		console.error('Pipeline execution failed:', error)
+		process.exitCode = 1
+	})

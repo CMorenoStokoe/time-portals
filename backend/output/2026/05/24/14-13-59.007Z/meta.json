@@ -1,0 +1,23 @@
+{
+	"year": 1782,
+	"description": "The image offers a panoramic view from the Gibraltar Pillars of Hercules viewpoint, looking out towards the Mediterranean Sea and the coast of North Africa.\n\n**Orientation/Heading:**\nThe perspective is generally to the south-southeast. The landmass visible across the water on the horizon is the African continent, specifically the coastline of Morocco.\n\n**What is Visible:**\n\n*   **Foreground (Right):** A green coin-operated tourist telescope is prominently visible on the right side of the frame. It's mounted on a black metal railing, which also runs across the lower part of the image, suggesting a viewing platform or balcony.\n*   **Foreground (Center/Left):** Lush green foliage, including trees and bushes, dominates the immediate foreground, indicating the natural, somewhat wild setting of the viewpoint.\n*   **Midground (Below Viewpoint):** Directly below the viewpoint, nestled into the hillside, are some buildings with white roofs and walls, likely part of Gibraltar's infrastructure or residential areas. Some more scattered greenery and pathways are also visible.\n*   **Midground (Sea):** A vast expanse of deep blue sea fills the central and left portions of the image. The water is dotted with numerous ships of various sizes, indicating a busy shipping lane or harbor approach. Many appear to be cargo or tanker vessels.\n*   **Background (Horizon - Left/Center):** The distant horizon features a clear blue sky with some scattered white clouds.\n*   **Background (Horizon - Right):** The most prominent background feature is the coastline of North Africa (Morocco), stretching across the right side of the image. It appears mountainous and hazy in the distance, with some peaks clearly discernible.\n\n**What is Occluded:**\n\n*   The immediate ground directly beneath the viewpoint is mostly obscured by the railing and the slope of the hill.\n*   What lies directly behind the photographer (the path or platform leading to the viewpoint) is not visible.\n*   The western side of the Strait of Gibraltar, leading into the Atlantic Ocean, is not fully visible due to the southerly orientation and the curvature of the earth/land.\n*   Specific details of the individual ships are largely occluded by distance, though their general forms are clear.",
+	"country": "Gibraltar",
+	"location": "Gibraltar pillars of hercules viewpoint",
+	"highlights": [
+		{
+			"x": 0,
+			"y": 0,
+			"text": "Designed to be invincible, these heavily fortified Spanish floating batteries were ultimately destroyed by British red-hot cannonballs during the climax of the siege."
+		},
+		{
+			"x": 0,
+			"y": 0,
+			"text": "Jebel Musa in Morocco represents the southern Pillar of Hercules, mirroring the Rock of Gibraltar to frame the ancient gateway to the Mediterranean."
+		},
+		{
+			"x": 0,
+			"y": 0,
+			"text": "During this historic clash, over 40,000 soldiers and hundreds of ships fought for control of this strategic gateway, making it one of the longest sieges in British military history."
+		}
+	]
+}

@@ -2,57 +2,46 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	const location = page.url.pathname
+	const requestedPath = page.url.pathname
 		.split('/')
-		.filter((route) => route && route !== 'portals')
-		.join(', ');
+		.filter(Boolean)
+		.map((segment) => decodeURIComponent(segment))
+		.join(' / ');
 </script>
 
-<!-- Nice error page for 404 -->
 {#if page.status === 404}
-	<div
-		class="relative z-0 flex h-full w-full flex-col items-center justify-center gap-4 text-white"
-	>
-		<div class="portal-border absolute -z-10 h-3/4 w-1/2 rounded-full bg-transparent"></div>
-		<h1 class="text-8xl! font-bold">{page.status}</h1>
-		<p class="max-w-5/12 text-center">
-			We haven't opened a portal to {location} yet.
-			<br /><br />
-			<em>Please let us know you are interested!</em>
-		</p>
-		<button
-			class="rounded bg-green-300 p-1 text-black hover:scale-105"
-			onclick={() => goto(resolve('/'))}>Return to home</button
+	<main class="flex min-h-full w-full items-center justify-center px-4 font-body text-orange-50">
+		<section
+			class="w-full max-w-xl rounded-2xl border border-orange-200/20 bg-stone-900/80 p-8 text-center shadow-2xl"
 		>
-	</div>
+			<p class="font-display text-sm tracking-wide text-orange-200">Error {page.status}</p>
+			<h1 class="mt-2 font-display text-3xl font-black">Page Not Found</h1>
+			<p class="mt-4 text-sm leading-relaxed text-orange-100/90">
+				The page you requested could not be found.
+			</p>
+			<p class="mt-2 text-xs text-orange-200/75">
+				Requested path: {requestedPath || 'Unknown path'}
+			</p>
+			<button
+				class="mt-6 cursor-pointer rounded bg-orange-800 px-4 py-2 font-display text-white transition-transform hover:scale-105 hover:bg-orange-700"
+				onclick={() => goto(resolve('/'))}>Return Home</button
+			>
+		</section>
+	</main>
 {:else}
-	<!-- All other errors -->
-	<h1 class="text-9xl! font-bold">{page.status}</h1>
-	<p>{page.error?.message}</p>
+	<main class="flex min-h-full w-full items-center justify-center px-4 font-body text-orange-50">
+		<section
+			class="w-full max-w-xl rounded-2xl border border-orange-200/20 bg-stone-900/80 p-8 text-center shadow-2xl"
+		>
+			<p class="font-display text-sm tracking-wide text-orange-200">Error {page.status}</p>
+			<h1 class="mt-2 font-display text-3xl font-black">Something Went Wrong</h1>
+			<p class="mt-4 text-sm leading-relaxed text-orange-100/90">
+				{page.error?.message || 'An unexpected error occurred while loading this page.'}
+			</p>
+			<button
+				class="mt-6 cursor-pointer rounded bg-orange-800 px-4 py-2 font-display text-white transition-transform hover:scale-105 hover:bg-orange-700"
+				onclick={() => goto(resolve('/'))}>Return Home</button
+			>
+		</section>
+	</main>
 {/if}
-
-<style>
-	.portal-border {
-		border: 10px solid transparent;
-		background:
-			radial-gradient(circle at center, #312e81 0%, #111827 45%, #000000 100%) padding-box,
-			linear-gradient(90deg, #1e1b4b, #06b6d4, #7c3aed, #ec4899, #1e1b4b);
-		background-size:
-			100% 100%,
-			300% 100%;
-		animation: rainbow-move 4s linear infinite;
-	}
-
-	@keyframes rainbow-move {
-		from {
-			background-position:
-				0 0,
-				0 0;
-		}
-		to {
-			background-position:
-				0 0,
-				300% 0;
-		}
-	}
-</style>

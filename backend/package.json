@@ -1,6 +1,6 @@
 {
 	"name": "time-portals-agent",
-	"version": "1.0.0",
+	"version": "0.1.0",
 	"description": "Generator-critic backend for historically accurate landmark image synthesis",
 	"license": "ISC",
 	"author": "",
@@ -19,6 +19,7 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
+		"@types/cli-progress": "^3.11.6",
 		"@types/node": "^22.10.2",
 		"tsx": "^4.19.2",
 		"typescript": "^5.7.2"

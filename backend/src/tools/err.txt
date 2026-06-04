@@ -1,0 +1,18 @@
+
+Pipeline execution failed: InvalidUpdateError: Expected node "researcherQA" to return an object or an array containing at least one Command object, received function
+
+Troubleshooting URL: https://langchain-ai.github.io/langgraphjs/troubleshooting/errors/INVALID_GRAPH_NODE_RETURN_VALUE/
+
+    at RunnableCallable._getUpdates (C:\Users\chris\Documents\GitHub\time-portals\backend\node_modules\@langchain\langgraph\src\graph\state.ts:813:15)
+    at <anonymous> (C:\Users\chris\Documents\GitHub\time-portals\backend\node_modules\@langchain\langgraph\src\utils.ts:87:26)
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14)
+    at AsyncLocalStorageProvider.runWithConfig (file:///C:/Users/chris/Documents/GitHub/time-portals/backend/node_modules/@langchain/core/dist/singletons/async_local_storage/index.js:56:24)
+    at RunnableCallable.invoke (C:\Users\chris\Documents\GitHub\time-portals\backend\node_modules\@langchain\langgraph\src\utils.ts:85:62)
+    at ChannelWrite.doWrite (C:\Users\chris\Documents\GitHub\time-portals\backend\node_modules\@langchain\langgraph\src\pregel\write.ts:123:45)
+    at ChannelWrite._write (C:\Users\chris\Documents\GitHub\time-portals\backend\node_modules\@langchain\langgraph\src\pregel\write.ts:90:24)
+    at ChannelWrite.func (C:\Users\chris\Documents\GitHub\time-portals\backend\node_modules\@langchain\langgraph\src\pregel\write.ts:65:21)
+    at <anonymous> (C:\Users\chris\Documents\GitHub\time-portals\backend\node_modules\@langchain\langgraph\src\utils.ts:57:39)
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14) {
+  lc_error_code: 'INVALID_GRAPH_NODE_RETURN_VALUE',
+  pregelTaskId: 'd30f7fb4-61db-5512-b12a-d55c8373b6dd'
+}
