@@ -1,0 +1,127 @@
+{
+	"description": "File containing a manifest of training materials for image AI to reliably generate historical views of modern google street views",
+	"version": "0.0.1",
+	"materials": [
+		{
+			"promptText": "gibraltar/pillars-of-hercules/prompt.txt",
+			"promptImage": "gibraltar/pillars-of-hercules/prompt.png",
+			"outputFile": "gibraltar/pillars-of-hercules/error-example-changed_landscape-1.jpg",
+			"scorePass": false,
+			"scoreFailReason": "Changed landscape"
+		},
+		{
+			"promptText": "gibraltar/pillars-of-hercules/prompt.txt",
+			"promptImage": "gibraltar/pillars-of-hercules/prompt.png",
+			"outputFile": "gibraltar/pillars-of-hercules/error-example-changed_landscape-2.jpg",
+			"scorePass": false,
+			"scoreFailReason": "Changed landscape"
+		},
+		{
+			"promptText": "gibraltar/pillars-of-hercules/prompt.txt",
+			"promptImage": "gibraltar/pillars-of-hercules/prompt.png",
+			"outputFile": "gibraltar/pillars-of-hercules/error-example-changed_landscape-3.jpg",
+			"scorePass": false,
+			"scoreFailReason": "Changed landscape"
+		},
+		{
+			"promptText": "gibraltar/pillars-of-hercules/prompt.txt",
+			"promptImage": "gibraltar/pillars-of-hercules/prompt.png",
+			"outputFile": "gibraltar/pillars-of-hercules/error-example-changed_landscape-4.jpg",
+			"scorePass": false,
+			"scoreFailReason": "Changed landscape"
+		},
+		{
+			"promptText": "gibraltar/pillars-of-hercules/prompt.txt",
+			"promptImage": "gibraltar/pillars-of-hercules/prompt.png",
+			"outputFile": "gibraltar/pillars-of-hercules/error-example-changed_landscape-5.jpg",
+			"scorePass": false,
+			"scoreFailReason": "Changed landscape"
+		},
+		{
+			"promptText": "gibraltar/pillars-of-hercules/prompt.txt",
+			"promptImage": "gibraltar/pillars-of-hercules/prompt.png",
+			"outputFile": "gibraltar/pillars-of-hercules/error-example-changed_perspective-1.jpg",
+			"scorePass": false,
+			"scoreFailReason": "Changed perspective"
+		},
+		{
+			"promptText": "gibraltar/pillars-of-hercules/prompt.txt",
+			"promptImage": "gibraltar/pillars-of-hercules/prompt.png",
+			"outputFile": "gibraltar/pillars-of-hercules/error-example-changed_perspective-2.png",
+			"scorePass": false,
+			"scoreFailReason": "Changed perspective"
+		},
+		{
+			"promptText": "gibraltar/pillars-of-hercules/prompt.txt",
+			"promptImage": "gibraltar/pillars-of-hercules/prompt.png",
+			"outputFile": "gibraltar/pillars-of-hercules/bad-perspective-3.png",
+			"scorePass": false,
+			"scoreFailReason": "Changed perspective"
+		},
+		{
+			"promptText": "gibraltar/pillars-of-hercules/prompt.txt",
+			"promptImage": "gibraltar/pillars-of-hercules/prompt.png",
+			"outputFile": "gibraltar/pillars-of-hercules/success-example.jpg",
+			"scorePass": true
+		},
+		{
+			"promptText": "gibraltar/pillars-of-hercules/prompt.txt",
+			"promptImage": "gibraltar/pillars-of-hercules/prompt.png",
+			"outputFile": "gibraltar/pillars-of-hercules/good-2.jpg",
+			"scorePass": true
+		},
+		{
+			"promptText": "london/london-bridge/prompt.txt",
+			"promptImage": "london/london-bridge/prompt.png",
+			"outputFile": "london/london-bridge/bad-perspective-1.png",
+			"scorePass": false,
+			"scoreFailReason": "Changed perspective"
+		},
+		{
+			"promptText": "london/london-bridge/prompt.txt",
+			"promptImage": "london/london-bridge/prompt.png",
+			"outputFile": "london/london-bridge/bad-perspective-2.png",
+			"scorePass": false,
+			"scoreFailReason": "Changed perspective"
+		},
+		{
+			"promptText": "london/london-bridge/prompt.txt",
+			"promptImage": "london/london-bridge/prompt.png",
+			"outputFile": "london/london-bridge/bad-perspective-3.png",
+			"scorePass": false,
+			"scoreFailReason": "Changed perspective"
+		},
+		{
+			"promptText": "london/london-bridge/prompt.txt",
+			"promptImage": "london/london-bridge/prompt.png",
+			"outputFile": "london/london-bridge/bad-quality-1.png",
+			"scorePass": false,
+			"scoreFailReason": "Bad quality"
+		},
+		{
+			"promptText": "london/london-bridge/prompt.txt",
+			"promptImage": "london/london-bridge/prompt.png",
+			"outputFile": "london/london-bridge/good-1.png",
+			"scorePass": true
+		},
+		{
+			"promptText": "london/london-bridge/prompt.txt",
+			"promptImage": "london/london-bridge/prompt.png",
+			"outputFile": "london/london-bridge/bad-details-1.png",
+			"scorePass": false,
+			"scoreFailReason": "Unrealistic details"
+		},
+		{
+			"promptText": "london/london-bridge/prompt.txt",
+			"promptImage": "london/london-bridge/prompt.png",
+			"outputFile": "london/london-bridge/good-3.png",
+			"scorePass": true
+		},
+		{
+			"promptText": "london/london-bridge/prompt.txt",
+			"promptImage": "london/london-bridge/prompt.png",
+			"outputFile": "london/london-bridge/good-4.png",
+			"scorePass": true
+		}
+	]
+}
