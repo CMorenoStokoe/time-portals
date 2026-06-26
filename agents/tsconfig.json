@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"outDir": "dist",
+		"rootDir": ".", // Set the root directory to the current directory
+		"resolveJsonModule": true,
+		"types": ["node"]
+	},
+	"include": ["*.ts", "**/*.ts", "*.d.ts", "**/*.d.ts"]
+}

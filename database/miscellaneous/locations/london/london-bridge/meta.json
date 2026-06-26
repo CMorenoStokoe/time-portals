@@ -1,0 +1,26 @@
+{
+	"year": "1600",
+	"description": "Old London Bridge, a city unto itself",
+	"location": "London Bridge",
+	"country": "England",
+	"highlights": [
+		{
+			"x": "0.45",
+			"y": "0.35",
+			"title": "Houses on the Bridge",
+			"text": "Old London Bridge was lined with over 130 timber-framed buildings, some rising seven storeys high — making it effectively a street and a neighbourhood unto itself"
+		},
+		{
+			"x": "0.25",
+			"y": "0.18",
+			"title": "St Magnus the Martyr",
+			"text": "The church of St Magnus the Martyr stood at the northern foot of the bridge, its spire a landmark for river travellers approaching the City of London"
+		},
+		{
+			"x": "0.45",
+			"y": "0.55",
+			"title": "Thames River Trade",
+			"text": "The Thames was the artery of London's commerce — sailing barges and wherries ferried goods and passengers beneath the bridge's twenty narrow arches daily"
+		}
+	]
+}
