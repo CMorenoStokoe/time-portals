@@ -8,7 +8,7 @@ export const llm = {
 		// Gemini
 		image: new ChatGoogleGenerativeAI({
 			apiKey: process.env.GOOGLE_GEMINI_API_KEY as string,
-			model: 'gemini-2.5-flash-image',
+			model: 'gemini-3.1-flash-image',
 		}),
 		chat: new ChatGoogleGenerativeAI({
 			apiKey: process.env.GOOGLE_GEMINI_API_KEY as string,

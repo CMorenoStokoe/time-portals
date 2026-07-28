@@ -1,0 +1,131 @@
+{
+  "metadata": [
+    {
+      "country": "Gibraltar",
+      "location": "Main Street (historically Waterport Street)",
+      "latitude": 36.1415,
+      "longitude": -5.3538,
+      "heading": 0,
+      "pitch": 0,
+      "year": 1907,
+      "filename": "historical-reference-1-2.png.json",
+      "highlights": [],
+      "referenceFilename": "historical-reference-1-2.png",
+      "ai": true
+    },
+    {
+      "country": "Gibraltar",
+      "location": "Landport Gate, Gibraltar",
+      "latitude": 36.14537,
+      "longitude": -5.35149,
+      "heading": 0,
+      "pitch": 0,
+      "year": 1930,
+      "filename": "historical-reference-1.png.json",
+      "highlights": [],
+      "referenceFilename": "historical-reference-1-2.png",
+      "ai": true
+    },
+    {
+      "country": "Gibraltar",
+      "location": "Main Street, outside Casino Calpe, Gibraltar",
+      "latitude": 36.14198,
+      "longitude": -5.35275,
+      "heading": 0,
+      "pitch": 0,
+      "year": 1903,
+      "filename": "historical-reference-2-2.png.json",
+      "highlights": [],
+      "referenceFilename": "historical-reference-2-2.png",
+      "ai": true
+    },
+    {
+      "country": "Gibraltar",
+      "location": "Casemates Barracks, Grand Casemates Square, Gibraltar",
+      "latitude": 36.1453,
+      "longitude": -5.3525,
+      "heading": 0,
+      "pitch": 0,
+      "year": 1900,
+      "filename": "historical-reference-2.png.json",
+      "highlights": [],
+      "referenceFilename": "historical-reference-2-2.png",
+      "ai": true
+    },
+    {
+      "country": "Gibraltar",
+      "location": "John Mackintosh Square",
+      "latitude": 36.1425,
+      "longitude": -5.3534,
+      "heading": 0,
+      "pitch": 0,
+      "year": 1840,
+      "filename": "historical-reference-3-2.png.json",
+      "highlights": [],
+      "referenceFilename": "historical-reference-3-2.png",
+      "ai": true
+    },
+    {
+      "country": "Gibraltar",
+      "location": "Grand Casemates Square",
+      "latitude": 36.145025,
+      "longitude": -5.352602,
+      "heading": 0,
+      "pitch": 0,
+      "year": 1911,
+      "filename": "historical-reference-3.png.json",
+      "highlights": [],
+      "referenceFilename": "historical-reference-3-2.png",
+      "ai": true
+    },
+    {
+      "country": "Gibraltar",
+      "location": "Moorish Castle",
+      "latitude": 36.1436,
+      "longitude": -5.3503,
+      "heading": 0,
+      "pitch": 0,
+      "year": 1862,
+      "filename": "historical-reference-4.png.json",
+      "highlights": [],
+      "referenceFilename": "historical-reference-4.png",
+      "ai": true
+    },
+    {
+      "country": "Gibraltar",
+      "location": "Casemates Square",
+      "latitude": 36.1454,
+      "longitude": -5.3528,
+      "heading": 0,
+      "pitch": 0,
+      "year": 1782,
+      "filename": "_fvr-casemates.json",
+      "highlights": [],
+      "ai": true
+    },
+    {
+      "country": "Gibraltar",
+      "location": "Line Wall Road",
+      "latitude": 36.1418,
+      "longitude": -5.3552,
+      "heading": 0,
+      "pitch": 0,
+      "year": 1907,
+      "filename": "_fvr-lime-wall.json",
+      "highlights": [],
+      "ai": true
+    },
+    {
+      "country": "Gibraltar",
+      "location": "Main Street",
+      "latitude": 36.1415,
+      "longitude": -5.3538,
+      "heading": 0,
+      "pitch": 0,
+      "year": 1907,
+      "filename": "_fvr-main-street.json",
+      "highlights": [],
+      "ai": true
+    }
+  ]
+}
