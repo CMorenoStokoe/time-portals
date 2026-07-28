@@ -10,6 +10,8 @@
 		"evaluator": "tsx index.ts evaluator",
 		"generator": "tsx index.ts generator",
 		"generatorV1": "tsx index.ts generatorV1",
+		"scraper": "tsx scraper/scrape.ts && tsx scraper/organise-scraped-materials.ts",
+		"scrape-x": "tsx scraper/organise-scraped-materials.ts",
 		"sync": "tsx sync-with-app/sync.ts"
 	},
 	"dependencies": {

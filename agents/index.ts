@@ -1,4 +1,3 @@
-import { langsmithConfig } from './cfg/langsmith'
 import { getInputDir, getOutDir } from './cfg/dir'
 import { configDotenv } from 'dotenv'
 import fs from 'node:fs'
@@ -8,13 +7,14 @@ import { version as generatorAgentVer } from './generator-v0/version.json'
 import { evaluator } from './evaluator/index'
 import { getStdPromptBaseImg } from './utilities/getStdPromptBaseImg'
 import { getNonPromptImages } from './utilities/getNonPromptImages'
-import { generatorV1Agent } from './generator-v1/agent'
 import { version as generatorV1AgentVer } from './generator-v1/version.json'
 import { getMimeType } from './utilities/getMimeType'
 import { generatorV1 } from './generator-v1'
 
 configDotenv() // Load environment variables from .env file
-langsmithConfig() // Load LangSmith configuration
+process.env.LANGSMITH_TRACING = 'false'
+process.env.LANGCHAIN_TRACING_V2 = 'false'
+delete process.env.LANGSMITH_API_KEY
 
 type Agent = 'evaluator' | 'generator' | 'generatorV1'
 
@@ -56,12 +56,28 @@ const run = async () => {
 						console.log(
 							`Transforming ${image_file} (attempt ${attempts})`,
 						)
+						// Get image
 						const image = fs.readFileSync(
 							`${getInputDir(agent, agentRun)}/${image_file}`,
 						)
 						const imageBase64 = image.toString('base64')
 						const image_url = `data:${getMimeType(image_file)};base64,${imageBase64}` // Google GenAI requires data URLs for inline image content
-						const request = { image_url } // Create request object for the generator agent
+
+						// Get metadata
+						const metadataFilename = `${getInputDir(agent, agentRun)}/metadata/${image_file.split('.')[0]}.json`
+						let metadata = {}
+						if (fs.existsSync(metadataFilename)) {
+							metadata = JSON.parse(
+								fs.readFileSync(metadataFilename, 'utf-8'),
+							)
+						}
+						console.log(
+							`Got metadata for ${image_file}`,
+							Object.keys(metadata).length,
+						)
+
+						// Start agent request
+						const request = { image_url, metadata } // Create request object for the generator agent
 						const result = await generatorV1(request)
 						console.log(`Finished transforming ${image_file}`)
 

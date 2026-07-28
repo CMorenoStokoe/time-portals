@@ -1,7 +1,7 @@
 {
 	"name": "time-portals-project",
 	"private": true,
-	"version": "1.2.0",
+	"version": "1.2.2",
 	"type": "module",
 	"scripts": {
 		"app": "cd app && npm run dev",
