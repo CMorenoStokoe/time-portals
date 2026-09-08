@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 
-	export let metadata: App.PageData['metadata'];
+	let { metadata }: { metadata: App.PageData['metadata'] } = $props();
 
 	// States
-	let isActive = false;
+	let isActive = $state(false);
 
 	// Handlers
 	const handleMouseEnter = () => {
@@ -13,7 +13,7 @@
 	};
 </script>
 
-{#each metadata.highlights as highlight (highlight.title)}
+{#each metadata.highlights as highlight (highlight.text)}
 	<button
 		class="absolute flex flex-col space-y-1"
 		style="top: {highlight.y * 100}%; left: {highlight.x * 100}%;"

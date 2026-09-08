@@ -28,11 +28,7 @@ export const boomerangVideoLoop = (video: HTMLVideoElement, reverseSpeed = 1) =>
 		}
 
 		if (!video.seeking) {
-			if ('fastSeek' in video) {
-				video.fastSeek(targetTime);
-			} else {
-				video.currentTime = targetTime;
-			}
+			video.fastSeek(targetTime);
 		}
 
 		animationFrame = requestAnimationFrame(reverse);

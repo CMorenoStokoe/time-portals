@@ -22,12 +22,17 @@ interface Metadata {
 	ai: true
 }
 
+const SCORE_THRESHOLD = 13 // Minimum score for an image to be considered acceptable
+
 // Entrypoint to push the latest and greatest data to the web app data folder
 const sync = async () => {
 	// Get image outputs
 	const stagedInputs = fs.readdirSync(getInputDir('STAGED', version))
 	const generatorV1Inputs = fs.readdirSync(
 		getInputDir('generatorV1', version),
+	)
+	const stagedImageFiles = stagedInputs.filter(
+		(file) => !file.endsWith('.json'),
 	)
 	fs.mkdirSync(getOutDir('STAGED', version), { recursive: true })
 	console.log(`Got ${stagedInputs.length} staged image files`)
@@ -43,6 +48,8 @@ const sync = async () => {
 			)
 			const metadataContent = fs.readFileSync(metadataFile, 'utf-8')
 			const parsedMetadata = JSON.parse(metadataContent) as {
+				evaluation?: { score?: number }
+				reEvaluation?: { score?: number }
 				metadata: {
 					year: number
 					location: string
@@ -50,24 +57,35 @@ const sync = async () => {
 						latitude: number
 						longitude: number
 					}
+					highlights?: {
+						x: number
+						y: number
+						text: string
+					}[]
 				}
 			}
 			const sceneMetadata = parsedMetadata.metadata
-			const normalisedName = image_file.split('.')[0] // Removed json but also original extension from name
+			const normalisedName = image_file.replace(/\.json$/, '')
 			const referenceImageFile = generatorV1Inputs.find((inputFile) =>
 				inputFile.startsWith(normalisedName),
 			)
-			// Check if image is revision based on whether the image file can be found with this name, and if not add -revised to the end
-			const isRevision =
-				!fs.existsSync(
-					path.join(getInputDir('STAGED', version), image_file),
-				) &&
-				fs.existsSync(
-					path.join(
-						getInputDir('STAGED', version),
-						`${normalisedName}-revised.png`,
-					),
+			const generatedImageFile =
+				stagedImageFiles.find((file) =>
+					file.startsWith(`${normalisedName}-revised.`),
+				) ??
+				stagedImageFiles.find((file) =>
+					file.startsWith(`${normalisedName}.`),
 				)
+			if (!generatedImageFile) {
+				console.log(
+					'FAIL: No generated image found for metadata file, skipping',
+					image_file,
+				)
+				continue
+			}
+			const isRevision = generatedImageFile.startsWith(
+				`${normalisedName}-revised.`,
+			)
 
 			const appMetadata: Metadata = {
 				country: 'Gibraltar',
@@ -77,27 +95,49 @@ const sync = async () => {
 				heading: 0,
 				pitch: 0,
 				year: sceneMetadata.year,
-				filename: isRevision
-					? image_file.replace('.json', '-revised.png')
-					: image_file.replace('.json', '.png'), // Output image filename
+				filename: generatedImageFile, // Output image filename with original extension
 				highlights: sceneMetadata.highlights ?? [],
 				referenceFilename: referenceImageFile,
 				ai: true, // Indicates the image was ai generated
 			}
-			metadata.push(appMetadata)
 
-			// Try to copy reference image too
-			if (referenceImageFile) {
-				console.log('Copying reference image file', referenceImageFile)
-				fs.copyFileSync(
-					path.join(
-						getInputDir('generatorV1', version),
+			// Check if image is good enough quality to add to the app
+			const highestScore = isRevision
+				? parsedMetadata.reEvaluation?.score
+				: parsedMetadata.evaluation?.score
+			if ((highestScore ?? -Infinity) >= SCORE_THRESHOLD) {
+				console.log(
+					'PASS: Image meets quality threshold, adding to app metadata',
+					highestScore,
+				)
+				// Copy the image file to the app data folder
+				metadata.push(appMetadata)
+
+				// Try to copy reference image too
+				if (referenceImageFile) {
+					console.log(
+						'Copying reference image file',
 						referenceImageFile,
-					),
-					path.join(getOutDir('STAGED', version), referenceImageFile),
+					)
+					fs.copyFileSync(
+						path.join(
+							getInputDir('generatorV1', version),
+							referenceImageFile,
+						),
+						path.join(
+							getOutDir('STAGED', version),
+							referenceImageFile,
+						),
+					)
+				}
+			} else {
+				console.log(
+					'FAIL: Image does not meet quality threshold, skipping',
+					highestScore,
 				)
 			}
 		} else {
+			// Copy images (even if we only use the ones which we have metadata for)
 			console.log('Copying image file', image_file)
 			fs.copyFileSync(
 				path.join(getInputDir('STAGED', version), image_file),

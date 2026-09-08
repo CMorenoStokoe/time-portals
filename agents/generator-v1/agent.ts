@@ -71,15 +71,12 @@ export const metadataAgent = async (state: GeneratorV1GraphState) =>
 		.withStructuredOutput(metadataSchema)
 		.invoke([
 			new SystemMessage(
-				'Add metadata for this image based on what you can see in these images. Both images are of the same location so use details from both, but prioritise concrete details in the baseImg.',
+				'Add metadata for this image based on what you can see in these images. Both images are of the same location so use details from both, but prioritise concrete details in the baseImg.' +
+					'Use any provided metadata for additional details:' +
+					JSON.stringify(state.request.metadata ?? {}),
 			),
 			new HumanMessage({
 				content: [
-					{
-						id: 'generatedImg',
-						type: 'image_url',
-						image_url: `data:${state.generation.content[0].inlineData.mimeType};base64,${state.generation.content[0].inlineData.data}`, // First gen image
-					},
 					{
 						id: 'baseImg',
 						type: 'image_url',

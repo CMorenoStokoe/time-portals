@@ -25,27 +25,36 @@
 	font-display: swap;
 }
 
-/** GLobal styles */
+/** Global styles */
 html,
 body,
 app,
 #app {
 	height: 100%;
 	width: 100%;
-	background: #1c1917;
 }
 
-/** Historical Theme */
+/* Google font icons (access with <icon/> */
+icon {
+	font-family: 'Material Icons';
+}
+
+/** App color theme */
 @theme {
-	/* Fonts */
+	/* # Fonts */
 	--font-display: 'Grandstander', ui-serif, Georgia, serif;
 	--font-body: 'Roboto', ui-sans-serif, system-ui, sans-serif;
 	--font-greek: 'Caesar Dressing', ui-serif, Georgia, serif;
-	/*  Colors (for reference)
-	--color-primary: #7c2d12; --orange-900
-	--color-secondary: #1C1917; --stone-900
-	--color-accent: #FED7AA; ----orange-200
-	*/
+	/* # Colors */
+	/*  Common */
+	--color-primary: #7c2d12; /* --orange-900; */
+	--color-accent: #fed7aa; /* --orange-200; */
+	--color-text: white; /* #fff */
+	--color-dark: #1c1917; /* --stone-900; */
+	/*  Gibraltar */
+	--color-gibraltar-primary: var(--color-red-500); /* oklch(63.7% 0.237 25.331) = #fb2c36 */
+	--color-gibraltar-accent: var(--color-yellow-400); /* oklch(85.2% 0.199 91.936) */
+	--color-gibraltar-text: white /* #fff */;
 }
 
 /** Google MUI icons */

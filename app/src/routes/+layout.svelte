@@ -16,6 +16,10 @@
 	// Show splash on first load
 	let showSplash = $state(true);
 	onMount(() => {
+		void import('mapbox-gl').then(({ default: mapboxgl }) => {
+			mapboxgl.prewarm();
+		});
+
 		const timeout = setTimeout(() => {
 			showSplash = false;
 		}, 2000);
@@ -25,10 +29,13 @@
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
-{#if showSplash}
-	<Splash />
-{:else}
+<!-- Content -->
+<div class="font-body">
 	{@render children()}
-	<!-- Logo -->
-	<img src="/svg/logo-gibraltar-xs.svg" class="absolute top-1 right-6 h-12 w-auto" alt="Logo" />
+</div>
+
+<!-- Overlays -->
+{#if showSplash}
+	<!-- Splash -->
+	<Splash />
 {/if}

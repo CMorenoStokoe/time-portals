@@ -101,7 +101,7 @@ export const metadataSchema = z.object({
 	location: z
 		.string()
 		.describe(
-			'Within Gibraltar, where was this image taken? The location MUST be within Gibraltar, and not Spain for example. If the location is unknown, or the image is taken from the sky, give your best guess as to what the location pictured is.',
+			'Within Gibraltar, where was this image taken? The location MUST be within Gibraltar, and not Spain for example. If the location is unknown, or the image is taken from the sky, give your best guess as to what the location pictured is. Example: Casemates Square. Another example: Main Street',
 		),
 	coordinates: z.object({
 		latitude: z.number().describe('The latitude of the location.'),
