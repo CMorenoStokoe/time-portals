@@ -50,6 +50,7 @@
 						class="block h-dvh w-auto max-w-none"
 						src={`/media/${selectedLandmark.referenceFilename}`}
 						alt={selectedLandmark.referenceFilename}
+						onloadedmetadata={() => centerViewport()}
 					/>
 				{:else if selectedLandmark.hasAnimation}
 					<video
@@ -60,6 +61,7 @@
 						muted
 						loop
 						src={`/media/${selectedLandmark.filename.replace(/\.[^.]+$/, '.mp4')}`}
+						onloadedmetadata={() => centerViewport()}
 					></video>
 					<Watermark {selectedLandmark} />
 				{:else}
@@ -68,6 +70,7 @@
 						class="block h-dvh w-auto max-w-none"
 						src={`/media/${selectedLandmark.filename}`}
 						alt={selectedLandmark.filename}
+						onloadedmetadata={() => centerViewport()}
 					/>
 				{/if}
 			{/key}

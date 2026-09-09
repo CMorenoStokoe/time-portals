@@ -71,7 +71,7 @@
 				filters.era ? getEra(point.year, point.country).era === filters.era : point.hasAnimation
 			)
 			.slice(0, 9);
-		handleSelectLandmark(); // Reset current landmark to show suggestions in the menu bar
+		handleSelectLandmark(selectedLandmark); // Reset current landmark to show suggestions in the menu bar
 		// Remove previous click marker
 		mapClickMarker?.remove();
 	};
@@ -106,7 +106,7 @@
 
 		// Render map and menu assets
 		renderLandmarks(); // Add markers and pop-up labels
-		handleFilterEra(); // Add starting previews
+		handleFilterEra(era?.era); // Show featured previews on first load
 
 		// Zoom, rotate and compass controls
 		navControls = new mapboxgl.NavigationControl({});
