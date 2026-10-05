@@ -1,5 +1,6 @@
 # Scraper
 database/agents/
+database/manual/video/inputs/*
 
 # Logs
 logs

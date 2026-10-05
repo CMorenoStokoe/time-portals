@@ -1,7 +1,9 @@
 import { manifest as rawManifest } from '$lib/data/manifest';
 
-const mediaFiles = import.meta.glob('/static/media/*.webp');
-const availableMedia = new Set(Object.keys(mediaFiles).map((file) => file.split('/').at(-1)!));
+const mediaFiles = import.meta.glob(['/static/media/*.webp', '/static/media/*.mp4']);
+const availableMedia = new Set(
+	Object.keys(mediaFiles).map((file) => file.split('/').at(-1)!.replace(/\.mp4$/, '.webp'))
+);
 
 // Normalise manifest so it uses optimised files
 // src/lib/toWebp.ts

@@ -4323,7 +4323,8 @@ export const manifest: App.Media.Metadata[] = [
 		],
 		referenceFilename:
 			'0488-world-20war-20two-20anti-tank-20defenses-20by-20the-20frontier-20gate-20in-201958-jpg-cd9c659b1468.jpg',
-		ai: true
+		ai: true,
+		hasAnimation: true
 	},
 	{
 		country: 'Gibraltar',
@@ -4421,7 +4422,7 @@ export const manifest: App.Media.Metadata[] = [
 		heading: 0,
 		pitch: 0,
 		year: 1900,
-		filename: '0624-victoria-20battery-20circa-201900-png-8823d645793b.png-revised.png',
+		filename: '0624-victoria-20battery-20circa-201900-png-8823d645793b.png.png',
 		highlights: [
 			{
 				x: 0.51,
@@ -4440,7 +4441,8 @@ export const manifest: App.Media.Metadata[] = [
 			}
 		],
 		referenceFilename: '0624-victoria-20battery-20circa-201900-png-8823d645793b.png',
-		ai: true
+		ai: true,
+		hasAnimation: true
 	},
 	{
 		country: 'Gibraltar',
@@ -4970,6 +4972,7 @@ export const manifest: App.Media.Metadata[] = [
 		referenceFilename:
 			'0791-old-20postcard-20of-20the-20public-20market-20outside-20grand-20casemates-20gates-20as-20viewed-20from-20west-20place-20of-20arms-jpg-8012023a4d08.jpg',
 		ai: true,
+		hasAnimation: true,
 		disabled: true
 	},
 	{
@@ -5132,6 +5135,7 @@ export const manifest: App.Media.Metadata[] = [
 		referenceFilename:
 			'0805-the-20saluting-20battery-20line-20wall-20gibraltar-20by-20carter-20dibdin-jpg-4ec21f31a69f.jpg',
 		ai: true,
+		hasAnimation: true,
 		disabled: true
 	},
 	{
@@ -5158,7 +5162,8 @@ export const manifest: App.Media.Metadata[] = [
 		],
 		referenceFilename:
 			'0806-queen-20victoria-s-20battery-20and-20saluting-20battery-20in-20the-20background-jpg-b606e2b3bd87.jpg',
-		ai: true
+		ai: true,
+		hasAnimation: true
 	},
 	{
 		country: 'Gibraltar',
@@ -5758,7 +5763,8 @@ export const manifest: App.Media.Metadata[] = [
 			}
 		],
 		referenceFilename: '0859-new-20dockyard-20tower-201898-jpg-88f9542886e4.jpg',
-		ai: true
+		ai: true,
+		hasAnimation: true
 	},
 	{
 		country: 'Gibraltar',
@@ -6009,7 +6015,8 @@ export const manifest: App.Media.Metadata[] = [
 			}
 		],
 		referenceFilename: '0894-grand-20battery-jpg-165924805350.jpg',
-		ai: true
+		ai: true,
+		hasAnimation: true
 	},
 	{
 		country: 'Gibraltar',
@@ -6287,7 +6294,8 @@ export const manifest: App.Media.Metadata[] = [
 			}
 		],
 		referenceFilename: '0948-kings-20bastion-20photograph1-jpg-245b2e1a68ad.jpg',
-		ai: true
+		ai: true,
+		hasAnimation: true
 	},
 	{
 		country: 'Gibraltar',
@@ -6426,7 +6434,8 @@ export const manifest: App.Media.Metadata[] = [
 		],
 		referenceFilename:
 			'0974-part-20of-20the-20line-20wall-20gibraltar-20by-20edridge-20-20gibraltar-20museum-jpg-1669a0f7e111.jpg',
-		ai: true
+		ai: true,
+		hasAnimation: true
 	},
 	{
 		country: 'Gibraltar',
@@ -6539,7 +6548,8 @@ export const manifest: App.Media.Metadata[] = [
 		],
 		referenceFilename:
 			'0986-george-20washington-20wilson-20line-20wall-20late-2019th-20century-jpg-ed3f80e5fc7b.jpg',
-		ai: true
+		ai: true,
+		hasAnimation: true
 	},
 	{
 		country: 'Gibraltar',
@@ -6797,7 +6807,8 @@ export const manifest: App.Media.Metadata[] = [
 		],
 		referenceFilename:
 			'1381-royal-20engineer-20and-20port-20dept-20personnel-20with-2010-inch-20gun-20mid-201990s-jpg-e78d286be6e9.jpg',
-		ai: true
+		ai: true,
+		hasAnimation: true
 	},
 	{
 		country: 'Gibraltar',
@@ -6926,7 +6937,8 @@ export const manifest: App.Media.Metadata[] = [
 		],
 		referenceFilename:
 			'1396-plate-20i-20of-20a-20view-20of-20gibraltar-20taken-20by-20henry-20aston-20barker-20harraden-20j-20b-201808-jpg-22fc1b5e3823.jpg',
-		ai: true
+		ai: true,
+		hasAnimation: true
 	},
 	{
 		country: 'Gibraltar',
@@ -7013,7 +7025,7 @@ export const manifest: App.Media.Metadata[] = [
 		pitch: 0,
 		year: 1905,
 		filename:
-			'1411-royal-20battery-20-rock-20gun-20with-20a-206-20inch-20breech-20loader-20-bl-20mk-20vii-20circa-201905-20facing-20north-jpg-aebdd2094a02.jpg-revised.png',
+			'1411-royal-20battery-20-rock-20gun-20with-20a-206-20inch-20breech-20loader-20-bl-20mk-20vii-20circa-201905-20facing-20north-jpg-aebdd2094a02.jpg.png',
 		highlights: [
 			{
 				x: 0.35,
@@ -7033,7 +7045,8 @@ export const manifest: App.Media.Metadata[] = [
 		],
 		referenceFilename:
 			'1411-royal-20battery-20-rock-20gun-20with-20a-206-20inch-20breech-20loader-20-bl-20mk-20vii-20circa-201905-20facing-20north-jpg-aebdd2094a02.jpg',
-		ai: true
+		ai: true,
+		hasAnimation: true
 	},
 	{
 		country: 'Gibraltar',
@@ -7207,5 +7220,117 @@ export const manifest: App.Media.Metadata[] = [
 		],
 		referenceFilename: '1448-tarik-20climbs-20the-20rock-jpg-0a42bfe102c2.jpg',
 		ai: true
+	},
+	{
+		country: 'Gibraltar',
+		location: "Eliott's Monument",
+		locationType: 'monument',
+		latitude: 36.1318,
+		longitude: -5.3528,
+		heading: 0,
+		pitch: 0,
+		year: 1870,
+		filename:
+			'1308-view-20from-20elliot-s-20monument-20photographic-20views-20of-20gibraltar-20collected-20and-20arranged-20by-20captain-20s-20buckle-20re-jpg-5cc12f03f3a6.jpg.png',
+		highlights: [],
+		referenceFilename:
+			'1308-view-20from-20elliot-s-20monument-20photographic-20views-20of-20gibraltar-20collected-20and-20arranged-20by-20captain-20s-20buckle-20re-jpg-5cc12f03f3a6.jpg',
+		ai: true,
+		hasAnimation: true
+	},
+	{
+		country: 'Gibraltar',
+		location: 'Gibraltar Defence Force Intake',
+		locationType: 'military',
+		latitude: 36.145,
+		longitude: -5.348,
+		heading: 0,
+		pitch: 0,
+		year: 1949,
+		filename: '1223-gdf-20intake-201949-jpg-cc4497aa3a6f.jpg.png',
+		highlights: [],
+		referenceFilename: '1223-gdf-20intake-201949-jpg-cc4497aa3a6f.jpg',
+		ai: true,
+		hasAnimation: true
+	},
+	{
+		country: 'Gibraltar',
+		location: 'Public Market & West Place of Arms',
+		locationType: 'commercial',
+		latitude: 36.1458,
+		longitude: -5.3533,
+		heading: 0,
+		pitch: 0,
+		year: 1900,
+		filename:
+			'1199-market-20and-20west-20place-20of-20arms-20early-2020th-20century-jpg-7b352f00eccd.jpg.png',
+		highlights: [],
+		referenceFilename:
+			'1199-market-20and-20west-20place-20of-20arms-20early-2020th-20century-jpg-7b352f00eccd.jpg',
+		ai: true,
+		hasAnimation: true
+	},
+	{
+		country: 'Gibraltar',
+		location: 'Southport Gate & Bridge',
+		locationType: 'military',
+		latitude: 36.137,
+		longitude: -5.3533,
+		heading: 0,
+		pitch: 0,
+		year: 1860,
+		filename:
+			'1336-south-20port-20gate-20and-20bridge-201860-jpg-10bf527d567e.jpg.png',
+		highlights: [],
+		ai: true,
+		hasAnimation: true
+	},
+	{
+		country: 'Gibraltar',
+		location: 'Bay of Gibraltar (W.H. Smyth)',
+		locationType: 'nature',
+		latitude: 36.14,
+		longitude: -5.353,
+		heading: 0,
+		pitch: 0,
+		year: 1831,
+		filename: '1304-1831-20-20gibraltar-20w-h-20smyth-jpg-b0a9d787dfad.jpg.png',
+		highlights: [],
+		ai: true,
+		hasAnimation: true
+	},
+	{
+		country: 'Gibraltar',
+		location: 'Ragged Staff & South Bastion',
+		locationType: 'military',
+		latitude: 36.1364,
+		longitude: -5.3548,
+		heading: 0,
+		pitch: 0,
+		year: 1870,
+		filename:
+			'1160-1870-s-20ragged-20staff-20and-20south-20bastion-jpg-20e57b9af803.jpg.png',
+		highlights: [],
+		referenceFilename:
+			'1160-1870-s-20ragged-20staff-20and-20south-20bastion-jpg-20e57b9af803.jpg',
+		ai: true,
+		hasAnimation: true
+	},
+	{
+		country: 'Gibraltar',
+		location: 'South Bastion from Flat Bastion',
+		locationType: 'military',
+		latitude: 36.1368,
+		longitude: -5.3538,
+		heading: 0,
+		pitch: 0,
+		year: 1870,
+		filename:
+			'1159-1870-s-20south-20bastion-20from-20flat-20bastion-jpg-b6570e3c7676.jpg.png',
+		highlights: [],
+		referenceFilename:
+			'1159-1870-s-20south-20bastion-20from-20flat-20bastion-jpg-b6570e3c7676.jpg',
+		ai: true,
+		hasAnimation: true
 	}
-];
+];
