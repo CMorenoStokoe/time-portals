@@ -53,6 +53,7 @@ declare global {
 				// Media data
 				filename: string;
 				referenceFilename?: string; // Base image reference
+				thumbnailFilename?: string; // Dedicated lightweight thumbnail for preview lists
 				ai?: true; // Indicates if the image was ai generated or not
 				hasAnimation?: boolean; // Indicates if the image has an animation or not
 				// Content management

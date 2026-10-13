@@ -12,7 +12,11 @@
 	} = $props();
 
 	// Construct url path
-	const src = `/media/${landmark.filename}`;
+	const src = $derived(
+		landmark.thumbnailFilename
+			? `/media/thumbnails/${landmark.thumbnailFilename}`
+			: `/media/${landmark.filename}`
+	);
 
 	// Consutrct function to load in image and return resolved once loaded
 	const loadImage = () =>

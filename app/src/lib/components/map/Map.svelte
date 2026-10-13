@@ -65,12 +65,12 @@
 	const handleFilterEra = (era?: string) => {
 		filters.era = era;
 		renderLandmarks(); // Filter map markers
-		landmarkPreviews = [...manifest] // Filter previews in menu bar
+		const filtered = [...manifest] // Filter previews in menu bar
 			.sort((a, b) => a.year - b.year)
 			.filter((point) =>
 				filters.era ? getEra(point.year, point.country).era === filters.era : point.hasAnimation
-			)
-			.slice(0, 9);
+			);
+		landmarkPreviews = filters.era ? filtered.slice(0, 9) : filtered;
 		handleSelectLandmark(selectedLandmark); // Reset current landmark to show suggestions in the menu bar
 		// Remove previous click marker
 		mapClickMarker?.remove();

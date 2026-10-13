@@ -7,6 +7,7 @@ declare module 'sharp' {
 
 	type ResizeOptions = {
 		width?: number;
+		height?: number;
 		withoutEnlargement?: boolean;
 	};
 

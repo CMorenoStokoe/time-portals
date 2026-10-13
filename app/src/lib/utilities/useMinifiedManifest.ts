@@ -5,6 +5,11 @@ const availableMedia = new Set(
 	Object.keys(mediaFiles).map((file) => file.split('/').at(-1)!.replace(/\.mp4$/, '.webp'))
 );
 
+const thumbnailFiles = import.meta.glob('/static/media/thumbnails/*.webp');
+const availableThumbnails = new Set(
+	Object.keys(thumbnailFiles).map((file) => file.split('/').at(-1)!)
+);
+
 // Normalise manifest so it uses optimised files
 // src/lib/toWebp.ts
 
@@ -19,10 +24,14 @@ export const toWebp = (filename: string) => {
 	return `${hash.toString(16).padStart(16, '0')}.webp`;
 };
 
-const mappedManifest = rawManifest.map((item) => ({
-	...item,
-	filename: toWebp(item.filename),
-	referenceFilename: item.referenceFilename ? toWebp(item.referenceFilename) : undefined
-}));
+const mappedManifest = rawManifest.map((item) => {
+	const webpFilename = toWebp(item.filename);
+	return {
+		...item,
+		filename: webpFilename,
+		referenceFilename: item.referenceFilename ? toWebp(item.referenceFilename) : undefined,
+		thumbnailFilename: availableThumbnails.has(webpFilename) ? webpFilename : undefined
+	};
+});
 
 export const manifest = mappedManifest.filter((item) => availableMedia.has(item.filename));
