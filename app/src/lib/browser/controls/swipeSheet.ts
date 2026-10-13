@@ -39,6 +39,15 @@ export function swipeSheet(node: HTMLElement, options: SwipeSheetOptions = {}) {
 	}
 
 	function onPointerDown(e: PointerEvent) {
+		// Only track primary clicks for mouse
+		if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+		// Do not hijack pointer events on buttons, links, or interactive inputs
+		const target = e.target as HTMLElement | null;
+		if (target?.closest('button, a, input, select, textarea, [role="button"]')) {
+			return;
+		}
+
 		isDragging = true;
 		startY = e.clientY;
 		lastY = e.clientY;
@@ -47,7 +56,6 @@ export function swipeSheet(node: HTMLElement, options: SwipeSheetOptions = {}) {
 		velocityY = 0;
 		hasDragged = false;
 
-		handle.setPointerCapture(e.pointerId);
 		applyStateStyle(isExpanded, true);
 	}
 
@@ -63,7 +71,14 @@ export function swipeSheet(node: HTMLElement, options: SwipeSheetOptions = {}) {
 		lastTime = now;
 
 		const delta = e.clientY - startY;
-		hasDragged = hasDragged || Math.abs(delta) > 5;
+		if (!hasDragged && Math.abs(delta) > 5) {
+			hasDragged = true;
+			try {
+				handle.setPointerCapture(e.pointerId);
+			} catch {}
+		}
+
+		if (!hasDragged) return;
 
 		// Constrain direction: resist pulling down when closed, or up when open
 		if (isExpanded) {
@@ -82,19 +97,23 @@ export function swipeSheet(node: HTMLElement, options: SwipeSheetOptions = {}) {
 		suppressClick = hasDragged;
 
 		if (handle.hasPointerCapture(e.pointerId)) {
-			handle.releasePointerCapture(e.pointerId);
+			try {
+				handle.releasePointerCapture(e.pointerId);
+			} catch {}
 		}
 
-		// Snap logic: Check flick velocity first, fallback to positional threshold
-		const swipedUp = velocityY < -velocityThreshold || currentDeltaY < -threshold;
-		const swipedDown = velocityY > velocityThreshold || currentDeltaY > threshold;
+		if (hasDragged) {
+			// Snap logic: Check flick velocity first, fallback to positional threshold
+			const swipedUp = velocityY < -velocityThreshold || currentDeltaY < -threshold;
+			const swipedDown = velocityY > velocityThreshold || currentDeltaY > threshold;
 
-		if (!isExpanded && swipedUp) {
-			isExpanded = true;
-			options.onToggle?.(true);
-		} else if (isExpanded && swipedDown) {
-			isExpanded = false;
-			options.onToggle?.(false);
+			if (!isExpanded && swipedUp) {
+				isExpanded = true;
+				options.onToggle?.(true);
+			} else if (isExpanded && swipedDown) {
+				isExpanded = false;
+				options.onToggle?.(false);
+			}
 		}
 
 		node.style.setProperty('--sheet-offset', '0px');

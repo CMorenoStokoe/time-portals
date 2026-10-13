@@ -27,7 +27,7 @@
 <!-- Previews -->
 <SwipeMenu {showMenu} {handleShowMenu}>
 	<!-- Right buttons -->
-	<nav class="fixed top-8 right-9 flex flex-row gap-2">
+	<nav class="absolute top-8 right-9 flex flex-row gap-2">
 		{#if selectedLandmark}
 			<Share landmark={selectedLandmark} />
 		{/if}

@@ -56,11 +56,12 @@
 		mapClickMarker?.remove(); // Remove previous click marker
 		mapClickMarker = new mapboxgl.Marker({
 			color: 'red',
-			className: 'z-10',
+			className: 'z-[3] cursor-pointer',
 			offset: [offset[point.filename][0], offset[point.filename][1] - 10]!
 		})
 			.setLngLat([point.longitude, point.latitude])
 			.addTo(map);
+		mapClickMarker.getElement().style.zIndex = '3';
 	};
 	const handleFilterEra = (era?: string) => {
 		filters.era = era;
@@ -135,15 +136,15 @@
 </script>
 
 <div
-	class="fixed top-0 right-0 box-border h-full w-full overflow-hidden rounded-none border-2 border-hidden border-white transition-all"
+	class="absolute inset-0 box-border h-full w-full overflow-hidden"
 >
 	<!-- Map -->
 	<div bind:this={container} class="h-full w-full"></div>
 	<!-- Top menu -->
 	<!-- Icon -->
-	<img src="/svg/logo-gibraltar-xs.svg" class="fixed top-2 left-2 h-8 w-auto" alt="Logo" />
+	<img src="/svg/logo-gibraltar-xs.svg" class="absolute top-2 left-2 z-20 h-8 w-auto" alt="Logo" />
 	<!-- Filter -->
-	<div class="fixed top-2 left-18 z-20">
+	<div class="absolute top-2 left-18 right-2 z-20 overflow-hidden">
 		<EraSelection {country} selected={filters.era} {handleFilterEra} />
 	</div>
 

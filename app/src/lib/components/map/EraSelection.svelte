@@ -34,8 +34,8 @@
 
 <!-- Era options -->
 <div
-	class="box-border overflow-x-auto"
-	style="scrollbar-width:none; max-width: calc(100vw - 4.5rem);"
+	class="box-border w-full max-w-full overflow-x-auto"
+	style="scrollbar-width:none;"
 >
 	<!-- Timeline -->
 	<div class="relative flex flex-row items-start justify-start gap-0.5">

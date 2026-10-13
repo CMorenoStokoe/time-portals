@@ -28,7 +28,7 @@
 
 <div
 	use:swipeSheet={{ initialExpanded: showMenu.state, onToggle: handleShowMenu }}
-	class="fixed bottom-0 z-10 w-full overflow-hidden rounded-t-3xl bg-black/70 px-4 pt-16 pb-2 backdrop-blur"
+	class="absolute bottom-0 z-10 w-full overflow-hidden rounded-t-3xl bg-black/70 px-4 pt-16 pb-2 backdrop-blur"
 	style="scrollbar-color: rgba(0, 0, 0, 0.3) transparent;"
 	data-drag-handle
 >

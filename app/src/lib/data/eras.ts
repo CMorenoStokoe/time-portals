@@ -49,8 +49,8 @@ export const eras = {
 				'Gibraltar played a critical role as a gatekeeper between the Mediterranean and Atlantic Seas during both world wars and the inter-war period'
 		},
 		{
-			era: 'Civil War',
-			icon: '/svg/eras/Gibraltar/Civil War.svg',
+			era: 'Post-War',
+			icon: '/svg/eras/Gibraltar/Post-War.svg',
 			years: '1945-1984',
 			from: 1945,
 			to: 1984,

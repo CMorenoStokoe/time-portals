@@ -29,13 +29,18 @@
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
-<!-- Content -->
-<div class="font-body">
-	{@render children()}
-</div>
+<!-- Outer centered wrapper -->
+<div class="flex h-dvh w-full justify-center overflow-hidden bg-stone-950 font-body">
+	<!-- Mobile frame -->
+	<div
+		class="relative h-dvh w-full max-w-md overflow-hidden bg-black shadow-2xl sm:border-x sm:border-stone-800"
+	>
+		{@render children()}
 
-<!-- Overlays -->
-{#if showSplash}
-	<!-- Splash -->
-	<Splash />
-{/if}
+		<!-- Overlays -->
+		{#if showSplash}
+			<!-- Splash -->
+			<Splash />
+		{/if}
+	</div>
+</div>

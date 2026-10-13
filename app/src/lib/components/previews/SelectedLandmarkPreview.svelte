@@ -30,7 +30,7 @@
 		});
 </script>
 
-<button class="mt-2 flex flex-col gap-2 text-start" onclick={() => handleSelectView('landmark')}>
+<button class="mt-2 flex flex-col gap-2 text-start cursor-pointer" onclick={() => handleSelectView('landmark')}>
 	<!-- Landmark title -->
 	<p class="pr-20 font-body font-medium tracking-wide text-white">
 		{selectedLandmark.location}, {selectedLandmark.year}
@@ -99,7 +99,7 @@
 				</div>
 			{/if}
 			<div
-				class="flex flex-row items-center justify-center gap-2 rounded bg-gibraltar-accent px-2 py-1 font-display font-bold text-black"
+				class="flex flex-row items-center justify-center gap-2 rounded bg-gibraltar-accent px-2 py-1 font-display font-bold text-black cursor-pointer transition-transform hover:scale-105 active:scale-95"
 			>
 				View <icon>fullscreen</icon>
 			</div>

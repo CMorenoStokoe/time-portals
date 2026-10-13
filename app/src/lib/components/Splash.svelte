@@ -14,7 +14,7 @@
 <!-- Logo -->
 <div
 	transition:fade
-	class="fixed inset-0 z-10 flex h-full w-full flex-col items-center justify-center bg-black"
+	class="absolute inset-0 z-50 flex h-full w-full flex-col items-center justify-center bg-black"
 >
 	<img
 		src="/svg/logo-gibraltar-alt.svg"

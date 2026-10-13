@@ -21,7 +21,7 @@
 <!-- Landmark introduction -->
 <div
 	transition:fade
-	class="pointer-events-none fixed z-10 flex flex-col items-center text-stone-900 transition-all duration-700 ease-out {showTitleSplash
+	class="pointer-events-none absolute z-10 flex flex-col items-center text-stone-900 transition-all duration-700 ease-out {showTitleSplash
 		? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center'
 		: 'top-2 right-5 max-w-50 text-end'}"
 >

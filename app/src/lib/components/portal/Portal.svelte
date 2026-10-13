@@ -30,10 +30,10 @@
 </script>
 
 <!-- Landmark view on select -->
-<div class="bg-color-dark fixed inset-0 z-0">
+<div class="bg-color-dark absolute inset-0 z-0 overflow-hidden">
 	<!-- Nav button -->
 	<button
-		class="fixed top-2 left-2 z-10 flex h-8 w-8 flex-col items-center justify-center rounded-full bg-stone-600 text-2xl text-stone-100"
+		class="absolute top-2 left-2 z-10 flex h-8 w-8 flex-col items-center justify-center rounded-full bg-stone-600 text-2xl text-stone-100"
 		onclick={() => handleSelectView('map')}><icon>arrow_back</icon></button
 	>
 	<div bind:this={viewport} class="h-full w-full overflow-auto" style="scrollbar-width: thin;">
@@ -85,7 +85,7 @@
 		{#if selectedLandmark.referenceFilename}
 			<button
 				onclick={() => (showOriginalImage = !showOriginalImage)}
-				class="fixed bottom-16 left-1/2 flex -translate-x-14 cursor-pointer flex-row items-center justify-center gap-1 rounded bg-red-700 p-1 px-2 opacity-90 transition-all hover:scale-110 hover:opacity-100"
+				class="absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 cursor-pointer flex-row items-center justify-center gap-1 rounded bg-red-700 p-1 px-2 opacity-90 transition-all hover:scale-110 hover:opacity-100"
 				style="background-image: linear-gradient(rgb(0 0 0 / 40%), rgb(0 0 0 / 40%)),
 					url(/media/{showOriginalImage
 					? selectedLandmark.filename

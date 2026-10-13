@@ -29,7 +29,7 @@
 </script>
 
 <!-- Preview of a landmark -->
-<button class="relative flex flex-col" transition:fade onclick={() => handleClickMarker(landmark)}>
+<button class="relative flex flex-col cursor-pointer" transition:fade onclick={() => handleClickMarker(landmark)}>
 	{#await loadImage()}
 		<!-- Placeholder -->
 		<div

@@ -1,13 +1,16 @@
 <script lang="ts">
 	let { selectedLandmark }: { selectedLandmark: App.Media.Metadata } = $props();
 
-	const fileWatermarkTypes: Record<string, 'veo' | 'gemini'> = {
-		'Bay of Gibraltar': 'veo'
-	};
+	// Specific videos or locations that require a watermark can be listed here.
+	// Default action is to show NO watermark on videos.
+	const fileWatermarkTypes: Record<string, 'veo' | 'gemini'> = {};
 
 	const watermarkType = $derived(
 		fileWatermarkTypes[selectedLandmark.location] ??
-			fileWatermarkTypes[selectedLandmark.filename]
+			fileWatermarkTypes[selectedLandmark.filename] ??
+			(selectedLandmark.referenceFilename
+				? fileWatermarkTypes[selectedLandmark.referenceFilename]
+				: undefined)
 	);
 
 	const positions: Record<'veo' | 'gemini', string> = {
